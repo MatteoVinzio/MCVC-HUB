@@ -361,7 +361,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .pday-h .pload{font-size:10.5px;font-weight:700;color:var(--ink-400);}
 .pday-body{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
 .pblock{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;font-size:12.5px;border-left:3px solid;cursor:pointer;}
-.pblock .pt{width:78px;flex:none;font-weight:800;font-size:11.5px;color:var(--ink-600);}
+.pblock .pt{width:92px;flex:none;font-weight:800;font-size:11px;color:var(--ink-600);white-space:nowrap;}
 .pblock .pn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
 .pblock.busy{border-color:var(--ink-300);background:var(--ink-50);color:var(--ink-500);}
 .pblock.prop{border-style:dashed;opacity:.95;}
@@ -1502,11 +1502,11 @@ function greetNow(){ const h=new Date().getHours(); return h<12?"Buongiorno":h<1
    ============================================================ */
 function blockRow(b, {muted=false, clash=false}={}){
   const c=CONTEXTS[b.context]||CONTEXTS.work;
-  const time = b.background ? `${b.start}–${b.end}` : b.start;
+  const time = `${b.start}–${b.end}`;
   const style = muted ? "opacity:.62" : "";
   const clashB = clash ? `<span class="tag tag-ctx" style="background:var(--ambra-100);color:#8a5f0b" title="Possibile sovrapposizione">⚠︎ sovrapp.</span>` : "";
   return `<div class="row" data-block='${esc(JSON.stringify(b.ref||null))}' style="${style};cursor:${b.ref?'pointer':'default'}">
-    <div style="width:52px;flex:none;font-weight:800;font-size:12.5px;color:var(--ink-500)" class="tnum">${time}</div>
+    <div style="width:88px;flex:none;font-weight:800;font-size:11.5px;color:var(--ink-500)" class="tnum">${time}</div>
     <div class="row-main"><div class="row-title ${b.done?'done':''}">${esc(b.title)}</div>
       <div class="row-meta">${ctxTag(b.context)}${b.sub?`<span class="mini-note" style="margin:0">${esc(b.sub)}</span>`:""}${clashB}</div></div>
   </div>`;
@@ -1524,7 +1524,7 @@ function personalConstraintsToday(iso){
   const p = blocks.filter(b=>!b.background && b.context!=="work");
   if(!p.length) return "";
   return `<div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-user"/></svg> Vincoli personali di oggi</h2></div>
-    <div class="panel-body">${p.map(b=>`<div class="row" style="padding:8px 10px"><div style="width:48px;flex:none;font-weight:800;font-size:12px;color:var(--ink-500)" class="tnum">${b.start}</div><div class="row-main"><div class="row-title" style="font-size:13px">${esc(b.title)}</div><div class="row-meta">${ctxTag(b.context)}</div></div></div>`).join("")}
+    <div class="panel-body">${p.map(b=>`<div class="row" style="padding:8px 10px"><div style="width:86px;flex:none;font-weight:800;font-size:11px;color:var(--ink-500)" class="tnum">${b.start}–${b.end}</div><div class="row-main"><div class="row-title" style="font-size:13px">${esc(b.title)}</div><div class="row-meta">${ctxTag(b.context)}</div></div></div>`).join("")}
     <div class="help" style="margin-top:8px">Queste fasce non sono libere anche se sei in Modalità Lavoro.</div></div></div>`;
 }
 function statCard(label,val,sub,icon,{hero=false,onclick=""}={}){
@@ -1599,7 +1599,7 @@ RENDER.today = function(){
     const tw=$("#todayWork"); const wl=workTodayList();
     tw.innerHTML = wl.length?wl.map(taskRow).join(""):emptyBox("Niente di urgente o pianificato oggi","i-work");
     const up=$("#todayUpcoming"); const ev=upcomingEvents(iso,7,null);
-    up.innerHTML = ev.length?ev.map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div style="width:64px;flex:none;font-weight:800;font-size:11.5px;color:var(--ink-500)" class="tnum">${e.date===iso?"oggi":fmtDayShort(e.date)}<br>${e.start}</div><div class="row-main"><div class="row-title">${esc(e.title)}</div><div class="row-meta">${ctxTag(e.context)}</div></div></div>`).join(""):emptyBox("Nessun impegno nei prossimi giorni","i-agenda");
+    up.innerHTML = ev.length?ev.map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div style="width:78px;flex:none;font-weight:800;font-size:11px;color:var(--ink-500)" class="tnum">${e.date===iso?"oggi":fmtDayShort(e.date)}<br>${e.start}–${e.end}</div><div class="row-main"><div class="row-title">${esc(e.title)}</div><div class="row-meta">${ctxTag(e.context)}</div></div></div>`).join(""):emptyBox("Nessun impegno nei prossimi giorni","i-agenda");
   }
   const dl=$("#todayDeadlines");
   dl.innerHTML = openDeadlines.length?openDeadlines.slice(0,6).map(t=>{ const d=daysTo(t.deadline); const late=d<0;
@@ -1697,7 +1697,7 @@ function dayGridHTML(iso){
     const subLine=(!busy&&h>52&&b.sub)?`<div class="ev-h" style="opacity:.7">${esc(b.sub)}</div>`:"";
     return `<div class="${cls}" data-block='${esc(JSON.stringify(b.ref||null))}'
       style="top:${top}px;height:${h}px;left:calc(${leftPct}% + 2px);width:calc(${w}% - 4px);z-index:${busy?1:(b.derived?2:3)}">
-      ${cl}<div class="ev-t">${title}</div><div class="ev-h">${b.start}${h>34?"–"+b.end:""}</div>${subLine}</div>`; }).join("");
+      ${cl}<div class="ev-t">${title}</div><div class="ev-h">${b.start}–${b.end}</div>${subLine}</div>`; }).join("");
   const nowLine = iso===today()? nowLineHTML() : "";
   return `<div class="tl-wrap" id="tlWrap"><div class="tl-labels">${labels}</div>
     <div class="tl" id="tlGrid" style="height:${totalH*HOUR_PX}px"><div class="slots">${slots}</div>${evHTML}${nowLine}</div></div>`;
@@ -1711,7 +1711,7 @@ function weekHTML(monday){
     const {blocks,clash}=dayModel(iso);
     const items=blocks.filter(b=>!b.background&&ctxFilter.has(b.context));
     const chips=items.map(b=>{ const busy=MODE==="work"&&b.context!=="work"; const col=busy?"var(--ink-400)":ctxHex[b.context];
-      return `<div class="wkchip" data-block='${esc(JSON.stringify(b.ref||null))}' style="background:${busy?'var(--ink-100)':ctxHex[b.context]+'1a'};border-color:${col};color:${busy?'var(--ink-500)':ctxHex[b.context]}">${(!busy&&clash.has(b.id))?"⚠︎ ":""}${b.start} ${busy?'Occupato':esc(b.title)}</div>`;
+      return `<div class="wkchip" data-block='${esc(JSON.stringify(b.ref||null))}' style="background:${busy?'var(--ink-100)':ctxHex[b.context]+'1a'};border-color:${col};color:${busy?'var(--ink-500)':ctxHex[b.context]}">${(!busy&&clash.has(b.id))?"⚠︎ ":""}${b.start}–${b.end} ${busy?'Occupato':esc(b.title)}</div>`;
     }).join("")||`<div class="help" style="text-align:center;padding:6px 0">—</div>`;
     out+=`<div class="wkcol ${isT?'today':''}" data-day="${iso}"><div class="wkcol-h">${DOW[i]}<b>${d.getDate()}</b></div>${chips}
       <button class="btn btn-sm btn-ghost btn-block" data-addday="${iso}" style="margin-top:auto"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-plus"/></svg></button></div>`;
@@ -1890,7 +1890,7 @@ function planDayCard(iso){
     const data = it.prop?`data-rmprop="${it.prop}"`:(it.ref?`data-block='${esc(JSON.stringify(it.ref))}'`:"");
     const rm = it.prop?`<button class="rm" data-rmprop="${it.prop}" aria-label="Rimuovi"><svg fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><use href="#i-close"/></svg></button>`:"";
     return `<div class="${cls}" style="border-color:${ctxHex[it.ctx]};${it.busy?'':'background:'+ctxHex[it.ctx]+'12'}" ${it.ref?`data-block='${esc(JSON.stringify(it.ref))}'`:""}>
-      <span class="pt tnum">${it.start}</span><span class="pn">${esc(it.title)}</span>${rm}</div>`;
+      <span class="pt tnum">${it.start}–${it.end}</span><span class="pn">${esc(it.title)}</span>${rm}</div>`;
   }).join("") : `<div class="help" style="padding:4px 2px">Libero</div>`;
   return `<div class="pday ${isT?'today':''}"><div class="pday-h"><b>${DOW_FULL[di].slice(0,3)} ${d.getDate()}</b><span class="pload">${loadH?loadH.toFixed(1).replace(/\.0$/,'')+'h':''}</span></div>
     <div class="pday-body">${rows}
