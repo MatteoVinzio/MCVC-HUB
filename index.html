@@ -436,7 +436,10 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .wkev.workband{background:rgba(29,90,143,.06);border:1px solid rgba(29,90,143,.12);border-left:3px solid rgba(29,90,143,.3);box-shadow:none;pointer-events:none;color:var(--ctx-work);z-index:0;}
 .wkcal .nowline{z-index:6;}
 @media (max-width:960px){
-  .wkcal{--wk-time:30px;max-height:calc(100dvh - 230px);}
+  /* Su mobile la griglia NON è uno scroller interno: si espande e scorre la pagina,
+     così puoi arrivare al calendario e ai filtri sotto (niente "trappola" di scroll). */
+  .wkcal{--wk-time:30px;max-height:none;overflow:visible;}
+  .wkcal-head{top:calc(var(--topbar-h) + var(--safe-t));}
   .wkev{font-size:8px;padding:2px 2px 2px 3px;line-height:1.1;letter-spacing:-.02em;}
   .wkev .wkev-h{font-size:7.5px;}
   .wkcal-dh b{font-size:14px;}
@@ -605,7 +608,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
   .top-actions .btn{padding:0 12px;width:42px;}
   .today-chip{display:none;}
   .page{padding:16px 14px calc(96px + var(--safe-b));}
-  .tl-wrap{max-height:none;}
+  .tl-wrap{max-height:none;overflow:visible;}
   /* Bottom tabbar */
   .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(255,255,255,.94);
     backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--ink-200);
