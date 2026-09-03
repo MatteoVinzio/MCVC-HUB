@@ -2114,6 +2114,9 @@ function inThisWeek(iso,monday){ const d=parseIso(iso), m=new Date(monday); m.se
 RENDER.sport = function(){
   const p=$("#page-sport"); const wkMon=mondayOf(new Date());
   const gymThisWeek=live("events").filter(e=>e.context==="gym"&&inThisWeek(e.date,wkMon));
+  const corsaThisWeek=live("events").filter(e=>e.context==="corsa"&&inThisWeek(e.date,wkMon)).sort((a,b)=>a.date<b.date?-1:1);
+  const corsaMin=corsaThisWeek.reduce((a,e)=>a+(hm2min(e.end)-hm2min(e.start)),0);
+  const corsaRows = corsaThisWeek.length? corsaThisWeek.map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div class="row-main"><div class="row-title ${e.done?'done':''}">${esc(e.title)}</div><div class="row-meta"><span class="tag tag-cat">${fmtDayShort(e.date)} · ${e.start}–${e.end}</span></div></div></div>`).join("") : emptyBox("Nessuna corsa pianificata questa settimana","i-run");
   const workouts=`<div class="wo-list">`+live("workouts").map(w=>{ const done=gymThisWeek.filter(e=>e.workoutId===w.id&&e.done).length; const plan=gymThisWeek.filter(e=>e.workoutId===w.id).length;
     return `<button class="wo-item" data-workout="${w.id}"><span class="wo-dot" style="background:${w.colore}"></span>
       <span class="wo-name">${esc(w.nome)}</span><span class="wo-dur">${w.durata} min</span>${plan?`<span class="wo-cnt">${done}/${plan}</span>`:''}</button>`;
@@ -2134,6 +2137,9 @@ RENDER.sport = function(){
       </div>
       <div class="stack"><div class="toolbar"><h2 style="font-size:16px;font-weight:800">Calcio</h2><div class="toolbar-r"><button class="btn btn-verde btn-sm" id="sportAddFootball"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Impegno</button></div></div>
         <div class="panel"><div class="panel-body" style="padding-top:8px">${football}</div></div>
+        <div class="toolbar" style="margin-top:2px"><h2 style="font-size:16px;font-weight:800">Corsa</h2><div class="toolbar-r"><button class="btn btn-verde btn-sm" id="sportAddCorsa"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Corsa</button></div></div>
+        <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-run"/></svg> Corsa questa settimana <span class="count">${corsaThisWeek.length}/${state.settings.corsaTarget}</span></h2></div>
+          <div class="panel-body">${corsaRows}${corsaMin?`<div class="help" style="margin-top:8px">Tempo totale: <b>${corsaMin} min</b></div>`:''}</div></div>
         <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-gym"/></svg> Palestra questa settimana</h2></div>
           <div class="panel-body">${gymThisWeek.length?gymThisWeek.sort((a,b)=>a.date<b.date?-1:1).map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div class="row-main"><div class="row-title ${e.done?'done':''}">${esc(e.title)}</div><div class="row-meta"><span class="tag tag-cat">${fmtDayShort(e.date)} · ${e.start}–${e.end}</span></div></div></div>`).join(""):emptyBox("Nessuna sessione pianificata","i-gym")}</div></div>
       </div></div>`;
@@ -2778,6 +2784,7 @@ function bindDelegated(){
       case "studyAddBlock": openEvent(null,{date:selDate,context:"study",start:"18:00",end:"19:30"}); break;
       case "sportAddWorkout": openWorkout(null); break;
       case "sportAddFootball": openFootball(null); break;
+      case "sportAddCorsa": quickAdd("corsa"); break;
       case "agAddBtn": openEvent(null,{date:selDate,context:ctxDefault()}); break;
       case "prevDay": shiftDay(-1); break;
       case "nextDay": shiftDay(1); break;
