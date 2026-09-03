@@ -79,6 +79,7 @@ h1,h2,h3,h4,p{margin:0;}
 ul{margin:0;padding:0;list-style:none;}
 :focus-visible{outline:3px solid var(--blu-500);outline-offset:2px;border-radius:4px;}
 .tnum{font-variant-numeric:tabular-nums;}
+svg{stroke-linecap:round;stroke-linejoin:round;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 
@@ -231,6 +232,10 @@ body.mode-work .work-flag{display:inline-flex;}
 .grid-2{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;align-items:start;}
 .stack{display:flex;flex-direction:column;gap:16px;min-width:0;}
 .panel{background:#fff;border-radius:var(--r-lg);box-shadow:var(--sh-2);overflow:hidden;}
+.panel.primary{box-shadow:0 0 0 2px rgba(0,166,81,.28),var(--sh-2);}
+.panel.primary>.panel-head{padding-top:16px;}
+.panel.primary>.panel-head h2{font-size:16px;}
+.panel.primary>.panel-head h2 svg{color:var(--verde-700);}
 .panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 17px 11px;}
 .panel-head h2{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:8px;letter-spacing:-.01em;}
 .panel-head h2 svg{width:17px;height:17px;color:var(--blu-700);}
@@ -324,6 +329,9 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .ev.busy{background:var(--ink-100)!important;border-color:var(--ink-300)!important;color:var(--ink-500)!important;background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0 7px,transparent 7px 14px)!important;}
 .ev.proposal{border-style:dashed;border-width:1.5px 1.5px 1.5px 3px;box-shadow:none;opacity:.92;}
 .ev.derived{opacity:.9;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px);cursor:default;}
+/* Fascia orario di lavoro: solo sfondo leggero, non un evento in conflitto */
+.ev.workband{background:rgba(29,90,143,.06);border:1px solid rgba(29,90,143,.13);border-left:3px solid rgba(29,90,143,.34);box-shadow:none;cursor:default;color:var(--ctx-work);background-image:none;opacity:1;}
+.ev.workband .workband-label{position:sticky;top:2px;font-size:10.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;opacity:.72;white-space:nowrap;}
 .ev-badge-clash{position:absolute;top:3px;right:4px;width:15px;height:15px;border-radius:50%;background:var(--ambra-600);color:#fff;display:grid;place-items:center;font-size:9px;font-weight:800;box-shadow:0 0 0 2px #fff;}
 .nowline{position:absolute;left:0;right:0;height:2px;background:var(--rosso-600);z-index:6;pointer-events:none;}
 .nowline::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--rosso-600);}
@@ -371,6 +379,19 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
   box-shadow:var(--sh-in);background:#fff;color:var(--ink-600);min-height:32px;}
 .padd button:hover{background:var(--ink-50);}
 .padd button .dot{width:8px;height:8px;border-radius:50%;}
+/* Schede palestra (essenziali: nome + durata) */
+.wo-list{display:flex;flex-direction:column;}
+.wo-item{display:flex;align-items:center;gap:11px;padding:12px 6px;border-radius:var(--r-sm);text-align:left;width:100%;transition:background .14s;}
+.wo-item+.wo-item{border-top:1px solid var(--ink-100);}
+.wo-item:hover{background:var(--ink-50);}
+.wo-dot{width:11px;height:11px;border-radius:4px;flex:none;}
+.wo-name{flex:1;min-width:0;font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wo-dur{font-size:13px;font-weight:800;color:var(--ink-700);}
+.wo-cnt{font-size:11px;font-weight:800;color:var(--verde-700);background:var(--verde-100);padding:2px 8px;border-radius:var(--r-full);}
+.pref-group{padding:10px 0 12px;border-top:1px solid var(--ink-100);}
+.pref-group:first-child{border-top:0;padding-top:2px;}
+.pref-title{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;margin-bottom:9px;}
+.pref-title .dot{width:9px;height:9px;border-radius:3px;}
 .plan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:10px;}
 @media (max-width:960px){ .plan-goals{grid-template-columns:repeat(4,1fr);gap:6px;} .goal{padding:8px 9px;} .goal-val{font-size:13px;} .plan-grid{grid-template-columns:1fr;} }
 @media (max-width:400px){ .plan-goals{grid-template-columns:repeat(2,1fr);} }
@@ -415,6 +436,10 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .seg-ctx{display:flex;gap:6px;flex-wrap:wrap;}
 .seg-ctx button{padding:8px 12px;border-radius:var(--r-full);font-size:12.5px;font-weight:700;box-shadow:var(--sh-in);background:#fff;color:var(--ink-600);min-height:38px;}
 .seg-ctx button.on{color:#fff;box-shadow:none;}
+.more-fields>summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--blu-700);padding:8px 2px;list-style:none;display:flex;align-items:center;gap:6px;}
+.more-fields>summary::-webkit-details-marker{display:none;}
+.more-fields>summary::before{content:"+";font-weight:800;font-size:15px;}
+.more-fields[open]>summary::before{content:"–";}
 
 /* Toast */
 .toast-wrap{position:fixed;left:0;right:0;bottom:calc(16px + var(--safe-b));display:flex;flex-direction:column;align-items:center;gap:8px;z-index:120;pointer-events:none;padding:0 14px;}
@@ -516,6 +541,13 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 @media (min-width:961px){
   .modal{align-self:center;border-radius:var(--r-xl);margin:20px;}
   .back{align-items:center;}
+  /* Agenda desktop più ampia e professionale */
+  .tl-wrap{grid-template-columns:60px 1fr;}
+  .tl-labels .hlabel{font-size:11.5px;}
+  .slots .slot{border-bottom:1px solid var(--ink-100);}
+  .ev{font-size:12.5px;padding:6px 10px;}
+  .ev .ev-t{font-size:13px;}
+  body.mode-work .ag-main{box-shadow:var(--sh-3);}
 }
 @media print{
   .sidebar,.topbar,.tabbar,.fab-menu,.toolbar,.ag-nav{display:none!important;}
@@ -533,8 +565,8 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 <g id="i-agenda"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></g>
 <g id="i-work"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></g>
 <g id="i-study"><path d="M4 19.5V6a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M8 8h8M8 12h6"/></g>
-<g id="i-gym"><path d="M6.5 6.5l11 11M4 9l2-2m12 12l2-2M3 15l3 3M18 3l3 3"/></g>
-<g id="i-ball"><circle cx="12" cy="12" r="9"/><path d="M12 7.2l4 2.9-1.5 4.7h-5L8 10.1z"/></g>
+<g id="i-gym"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></g>
+<g id="i-ball"><circle cx="12" cy="12" r="9"/><path d="M12 7l4.76 3.45-1.82 5.55H9.06L7.24 10.45z"/><path d="M12 7V3M16.94 16l2.5 3M7.06 16l-2.5 3M7.24 10.45L4 8M16.76 10.45L20 8"/></g>
 <g id="i-stats"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g>
 <g id="i-cats"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></g>
 <g id="i-say"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></g>
@@ -569,8 +601,8 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 <g id="i-cloud"><path d="M18 10a5 5 0 00-9.6-1.5A4 4 0 106 18h11a4 4 0 001-7.9z"/></g>
 <g id="i-copy"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></g>
 <g id="i-page"><path d="M14 3v5h5"/><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V8z"/></g>
-<g id="i-run"><circle cx="13" cy="4.5" r="1.8"/><path d="M5 20l3-4 3 1 1-4-3-2 4-3 2 3 3 1M8 12l-1 4"/></g>
-<g id="i-week"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M8 13h2M14 13h2M8 17h2M14 17h2"/></g>
+<g id="i-run"><circle cx="13" cy="4" r="1.4"/><path d="M4 17l5 1 .75-1.5"/><path d="M15 21v-4l-4-3 1-6"/><path d="M7 12V9l5-1 3 3 3 1"/></g>
+<g id="i-week"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13.5h10"/></g>
 <g id="i-bolt"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></g>
 </defs>
 </svg>
@@ -615,8 +647,8 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
       <button class="nav-btn active" data-page="today"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-today"/></svg><span>Oggi</span></button>
       <button class="nav-btn" data-page="planner" data-personal="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-week"/></svg><span>Settimana</span></button>
       <button class="nav-btn" data-page="agenda"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg><span>Agenda</span></button>
-      <button class="nav-btn" data-page="work"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg><span>Lavoro</span><span class="nav-badge" id="navBadgePlan" hidden>0</span></button>
-      <button class="nav-btn" data-page="say" data-ctx="work"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-say"/></svg><span>Da dire</span></button>
+      <button class="nav-btn" data-page="work" data-work="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg><span>Lavoro</span><span class="nav-badge" id="navBadgePlan" hidden>0</span></button>
+      <button class="nav-btn" data-page="say" data-work="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-say"/></svg><span>Da dire</span></button>
       <button class="nav-btn" data-page="study" data-personal="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-study"/></svg><span>Studio</span></button>
       <button class="nav-btn" data-page="sport" data-personal="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-gym"/></svg><span>Sport</span></button>
       <button class="nav-btn" data-page="stats"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-stats"/></svg><span>Statistiche</span></button>
@@ -803,16 +835,20 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 <!-- ============ MODALE SCHEDA PALESTRA ============ -->
 <div class="back" id="workoutModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true">
-    <div class="m-head"><div><h2 id="workoutModalTitle">Nuova scheda</h2><p>Modello di allenamento.</p></div>
+    <div class="m-head"><div><h2 id="workoutModalTitle">Nuova scheda</h2><p>Ti bastano nome e durata.</p></div>
       <button class="icon-btn" data-close="workoutModal" aria-label="Chiudi"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-close"/></svg></button></div>
     <form id="workoutForm"><div class="m-body">
       <input type="hidden" id="woId" />
       <div class="fgrid">
-        <div class="full"><label class="lbl" for="woName">Nome</label><input class="field" id="woName" required maxlength="80" placeholder="Es. Day 1 · Upper" /></div>
-        <div><label class="lbl" for="woType">Tipo</label><select class="select" id="woType"><option value="forza">Forza</option><option value="cardio">Cardio</option><option value="mobilità">Mobilità</option></select></div>
-        <div><label class="lbl" for="woDur">Durata (min)</label><input type="number" min="10" class="field" id="woDur" value="75" /></div>
-        <div class="full"><label class="lbl" for="woEx">Esercizi (uno per riga)</label><textarea class="textarea" id="woEx" placeholder="Panca 4x8&#10;Trazioni 4x8"></textarea></div>
-        <div class="full"><label class="lbl" for="woNote">Note</label><input class="field" id="woNote" maxlength="200" /></div>
+        <div class="full"><label class="lbl" for="woName">Nome</label><input class="field" id="woName" required maxlength="80" placeholder="Es. Day 1" /></div>
+        <div class="full"><label class="lbl" for="woDur">Durata (min)</label><input type="number" min="10" class="field" id="woDur" value="75" /></div>
+        <details class="full more-fields"><summary>Altri dettagli (facoltativo)</summary>
+          <div class="fgrid" style="margin-top:10px">
+            <div class="full"><label class="lbl" for="woType">Tipo</label><select class="select" id="woType"><option value="forza">Forza</option><option value="cardio">Cardio</option><option value="mobilità">Mobilità</option></select></div>
+            <div class="full"><label class="lbl" for="woEx">Esercizi (uno per riga)</label><textarea class="textarea" id="woEx" placeholder="Panca 4x8&#10;Trazioni 4x8"></textarea></div>
+            <div class="full"><label class="lbl" for="woNote">Note</label><input class="field" id="woNote" maxlength="200" /></div>
+          </div>
+        </details>
       </div>
     </div><div class="m-foot">
       <button class="btn btn-danger spacer" type="button" id="delWoBtn" hidden><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-trash"/></svg> Elimina</button>
@@ -993,14 +1029,17 @@ const SCALARS = ["settings","goals","profile","gymNotes"];
 
 function defaultSettings(){
   return { lavoro:[
-      {on:true,start:"08:30",end:"17:00"},{on:true,start:"08:30",end:"17:00"},{on:true,start:"08:30",end:"17:00"},
-      {on:true,start:"08:30",end:"17:00"},{on:true,start:"08:30",end:"15:00"},{on:false,start:"09:00",end:"13:00"},{on:false,start:"09:00",end:"13:00"}],
+      {on:true,start:"08:30",end:"17:00",smart:false},{on:true,start:"08:30",end:"17:00",smart:false},{on:true,start:"08:30",end:"17:00",smart:false},
+      {on:true,start:"08:30",end:"17:00",smart:false},{on:true,start:"08:30",end:"15:00",smart:false},{on:false,start:"09:00",end:"13:00",smart:false},{on:false,start:"09:00",end:"13:00",smart:false}],
     wake:"07:00", bed:"23:30", noStudioDopo:"22:30", palestraDopoLavoro:true, recuperoGambeH:48, caricoMaxOre:9,
     showWorkHours:true,
-    /* Pianificatore settimanale (target + default) */
+    /* Pianificatore settimanale: target + durata + orario preferito per attività.
+       L'orario preferito è LIBERO (non per forza sera): la Settimana lo usa come
+       default modificabile per proporre inizio–fine. */
     gymTarget:4, corsaTarget:1, studioTarget:4,
     gymDur:75, corsaDur:45, studioDur:90,
-    slotEvening:"18:00", slotWeekendAM:"10:00",
+    gymPref:"18:00", corsaPref:"18:00", studioPrefWd:"20:00", studioPrefWe:"10:00",
+    slotEvening:"18:00", slotWeekendAM:"10:00",   // fallback storici
     gymRotation:[] };   // ordine schede (id) per la rotazione automatica
 }
 function defaultState(){
@@ -1331,8 +1370,8 @@ function workHoursBlock(iso){
   if(!state.settings.showWorkHours) return null;
   const w = state.settings.lavoro[dowIdx(parseIso(iso))];
   if(!w||!w.on) return null;
-  return { id:"work_"+iso, title:"Orario di lavoro", context:"work", s:hm2min(w.start), e:hm2min(w.end),
-    start:w.start, end:w.end, done:false, derived:true, kind:"workhours", ref:null, background:true, sub:"al lavoro" };
+  return { id:"work_"+iso, title: w.smart?"Lavoro · Smart working":"Lavoro", context:"work", s:hm2min(w.start), e:hm2min(w.end),
+    start:w.start, end:w.end, done:false, derived:true, kind:"workhours", ref:null, background:true, smart:!!w.smart, sub: w.smart?"smart working":"al lavoro" };
 }
 /* Tutti i blocchi del giorno, ordinati. */
 function dayModel(iso){
@@ -1416,10 +1455,12 @@ const PAGE_META = {
 };
 const RENDER = {}; // riempito più sotto
 
+const PERSONAL_PAGES=["study","sport","planner"], WORK_PAGES=["work","say"];
 function setPage(p){
   if(!PAGE_META[p]) p="today";
-  // in Modalità Lavoro le sezioni personali non sono in primo piano
-  if(MODE==="work" && (p==="study"||p==="sport") && !document.body.classList.contains("allow-personal")) { /* consentito comunque via link diretto */ }
+  // Aprire una sezione dell'altro workspace cambia automaticamente workspace.
+  if(WORK_PAGES.includes(p) && MODE!=="work"){ applyMode("work"); }
+  else if(PERSONAL_PAGES.includes(p) && MODE==="work"){ applyMode("general"); }
   curPage=p;
   $$(".page").forEach(x=>x.classList.remove("active"));
   const pg=$("#page-"+p); if(pg) pg.classList.add("active");
@@ -1456,11 +1497,15 @@ function applyMode(m,{persist=true}={}){
   document.body.classList.toggle("mode-work", MODE==="work");
   $("#brandMode").textContent = MODE==="work"?"Lavoro":"Generale";
   $$("#modeSwitch button, #topbarWs button").forEach(b=>b.classList.toggle("on", b.dataset.mode===MODE));
-  // navigazione contestuale: in Lavoro le voci personali (studio/sport/settimana) escono dal primo piano
+  // Separazione netta dei workspace:
+  //  Generale = Oggi/Settimana/Agenda/Studio/Sport/Statistiche  (niente Lavoro/Da dire)
+  //  Lavoro   = Oggi/Agenda/Lavoro/Da dire/Statistiche          (niente Settimana/Studio/Sport)
   $$('.nav-btn[data-personal]').forEach(b=>b.hidden = (MODE==="work"));
+  $$('.nav-btn[data-work]').forEach(b=>b.hidden = (MODE!=="work"));
   renderFabMenu(); syncTabbar();
-  // se la pagina corrente non è più in primo piano, torna a Oggi
-  if(MODE==="work" && (curPage==="study"||curPage==="sport"||curPage==="planner")) setPage("today");
+  const personalPages=["study","sport","planner"], workPages=["work","say"];
+  if(MODE==="work" && personalPages.includes(curPage)) setPage("today");
+  else if(MODE!=="work" && workPages.includes(curPage)) setPage("today");
   else { if(PAGE_META[curPage]) $("#pageSub").textContent=(MODE==="work"&&PAGE_META[curPage].ws)?PAGE_META[curPage].ws:PAGE_META[curPage].s; if(RENDER[curPage]) RENDER[curPage](); }
   scheduleBadges();
 }
@@ -1470,7 +1515,9 @@ const scheduleBadges = debounce(()=>{ updateBadges(); }, 60);
 function planTodayCount(){ const t=today(); return live("tasks").filter(x=>x.status!=="done" && (x.plannedFor===t||x.confirmedFor===t)).length; }
 function updateBadges(){
   const n=planTodayCount();
-  ["#navBadgePlan","#tabBadgePlan"].forEach(sel=>{ const e=$(sel); if(e){ e.textContent=n; e.hidden=n===0; } });
+  const e1=$("#navBadgePlan"); if(e1){ e1.textContent=n; e1.hidden=n===0; }
+  // il badge del tab (4ª voce) ha senso solo in Lavoro (dove il tab è "Lavoro")
+  const e2=$("#tabBadgePlan"); if(e2){ e2.textContent=n; e2.hidden=(n===0 || MODE!=="work"); }
   $("#todayChip").textContent = capitalize(fmtDayLong(new Date()));
 }
 const capitalize = s => s?s.charAt(0).toUpperCase()+s.slice(1):s;
@@ -1560,39 +1607,50 @@ RENDER.today = function(){
       + statCard("Studio settimana",needH!=null?Math.round(needH)+"h":"—","fabbisogno stimato","i-study",{onclick:"go:study"});
   }
 
-  const right = workFocus ? `
-    ${personalConstraintsToday(iso)}
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg> Da fare oggi</h2><button class="btn btn-sm btn-ghost" data-act="go:work">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
-      <div class="panel-body" id="todayTasks"></div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cal"/></svg> Scadenze</h2></div><div class="panel-body" id="todayDeadlines"></div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-say"/></svg> Da dire / da chiedere</h2><button class="btn btn-sm btn-ghost" data-act="go:say">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div><div class="panel-body" id="todaySay"></div></div>
-  ` : `
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-plus"/></svg> Inserimento rapido</h2></div>
-      <div class="panel-body"><form class="quick" id="quickTodayForm" style="display:flex;gap:8px" autocomplete="off">
-        <input class="field" id="quickTodayTitle" placeholder="Aggiungi al volo un'attività…" maxlength="180" required />
-        <button class="btn btn-verde" type="submit"><svg fill="none" stroke="currentColor" stroke-width="2.4"><use href="#i-plus"/></svg></button></form>
-        <div class="help">Va tra le attività di lavoro, priorità normale.</div></div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg> Lavoro oggi</h2><button class="btn btn-sm btn-ghost" data-act="go:work">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div><div class="panel-body" id="todayWork"></div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg> Prossimi impegni</h2></div><div class="panel-body" id="todayUpcoming"></div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cal"/></svg> Prossime scadenze</h2></div><div class="panel-body" id="todayDeadlines"></div></div>
-  `;
+  let mainCol, sideCol;
+  if(workFocus){
+    // Priorità visiva: PRIMA "Da fare oggi", poi l'agenda.
+    mainCol = `
+      <div class="panel primary"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg> Da fare oggi <span class="count" id="cntTasks">0</span></h2>
+        <button class="btn btn-sm btn-ghost" data-act="go:work">Tutte <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
+        <div class="panel-body" id="todayTasks"></div></div>`;
+    sideCol = `
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg> Agenda di oggi <span class="count">${workEvents.length}</span></h2>
+        <button class="btn btn-sm btn-ghost" data-act="go:agenda">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
+        <div class="panel-body">${timelineList(iso,{workFocus:true})}</div></div>
+      ${personalConstraintsToday(iso)}
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cal"/></svg> Scadenze</h2></div><div class="panel-body" id="todayDeadlines"></div></div>
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-say"/></svg> Da dire / da chiedere</h2><button class="btn btn-sm btn-ghost" data-act="go:say">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div><div class="panel-body" id="todaySay"></div></div>`;
+  } else {
+    mainCol = `
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-today"/></svg> Oggi in agenda <span class="count">${dayEvents.length}</span></h2>
+        <button class="btn btn-sm btn-ghost" data-act="go:agenda">Agenda <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
+        <div class="panel-body">${timelineList(iso,{workFocus:false})}</div></div>`;
+    sideCol = `
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-plus"/></svg> Inserimento rapido</h2></div>
+        <div class="panel-body"><form class="quick" id="quickTodayForm" style="display:flex;gap:8px" autocomplete="off">
+          <input class="field" id="quickTodayTitle" placeholder="Aggiungi al volo un'attività…" maxlength="180" required />
+          <button class="btn btn-verde" type="submit"><svg fill="none" stroke="currentColor" stroke-width="2.4"><use href="#i-plus"/></svg></button></form>
+          <div class="help">Va tra le attività di lavoro, priorità normale.</div></div></div>
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg> Lavoro oggi</h2><button class="btn btn-sm btn-ghost" data-act="go:work">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div><div class="panel-body" id="todayWork"></div></div>
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg> Prossimi impegni</h2></div><div class="panel-body" id="todayUpcoming"></div></div>
+      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cal"/></svg> Prossime scadenze</h2></div><div class="panel-body" id="todayDeadlines"></div></div>`;
+  }
 
   p.innerHTML = `
     <div style="margin-bottom:16px"><h2 style="font-size:22px;font-weight:800;letter-spacing:-.02em">${greetNow()}, ${esc(state.profile.nome||"")}</h2>
       <p style="color:var(--ink-500);font-size:13.5px;margin-top:2px;text-transform:capitalize">${fmtDayLong(new Date())}${dayHasClash(iso)?' · <span style="color:#8a5f0b;font-weight:700">possibile sovrapposizione oggi</span>':''}</p></div>
     <div class="stats">${stats}</div>
     <div class="grid-2">
-      <div class="stack"><div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-today"/></svg> Oggi in agenda ${workFocus?'<span class="count">'+workEvents.length+'</span>':'<span class="count">'+dayEvents.length+'</span>'}</h2>
-        <button class="btn btn-sm btn-ghost" data-act="go:agenda">Agenda <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
-        <div class="panel-body">${timelineList(iso,{workFocus})}</div></div>
-      </div>
-      <div class="stack">${right}</div>
+      <div class="stack">${mainCol}</div>
+      <div class="stack">${sideCol}</div>
     </div>`;
 
   // riempimenti dinamici
   if(workFocus){
     const tt=$("#todayTasks"); const list=live("tasks").filter(t=>t.status!=="done"&&(t.plannedFor===iso||t.confirmedFor===iso)).sort(sortTasks);
-    tt.innerHTML = list.length?list.map(taskRow).join(""):emptyBox("Niente pianificato per oggi","i-target");
+    tt.innerHTML = list.length?list.map(taskRow).join(""):emptyBox("Niente pianificato per oggi — pianifica dalla sezione Lavoro","i-target");
+    const cnt=$("#cntTasks"); if(cnt) cnt.textContent=list.length;
     const sy=$("#todaySay"); const notes=live("notes").filter(n=>!n.done).sort((a,b)=>b.urgency-a.urgency).slice(0,5);
     sy.innerHTML = notes.length?notes.map(noteRow).join(""):emptyBox("Nessun punto in sospeso","i-say");
   } else {
@@ -1687,7 +1745,7 @@ function dayGridHTML(iso){
   const laid = layoutColumns(real);
   const px = m => (m/60 - DAY_START)*HOUR_PX;
   let evHTML = bg.map(b=>{ const top=clamp(px(b.s),0,totalH*HOUR_PX), h=Math.max(14,px(b.e)-px(b.s));
-    return `<div class="ev ev-${b.context} derived" style="top:${top}px;height:${h}px;left:1px;right:1px;z-index:0"><div class="ev-t">${esc(b.title)}</div><div class="ev-h">${b.start}–${b.end}</div></div>`; }).join("");
+    return `<div class="ev workband" style="top:${top}px;height:${h}px;left:1px;right:1px;z-index:0"><div class="workband-label">${esc(b.title)} · ${b.start}–${b.end}</div></div>`; }).join("");
   evHTML += laid.map(b=>{ const top=clamp(px(b.s),0,totalH*HOUR_PX); const h=Math.max(20,px(Math.min(b.e,endMin))-px(b.s));
     const w=100/b._ncol, leftPct=b._col*w;
     const busy = MODE==="work" && b.context!=="work";
@@ -1775,12 +1833,22 @@ function gymRotationList(){ const rot=(state.settings.gymRotation||[]).filter(id
 function gymRotationNext(idx){ const list=gymRotationList(); return list.length?list[idx%list.length]:""; }
 function nextFootballDay(iso){ // true se il giorno DOPO ha calcio (per recupero gambe)
   return footballBlocksForDay(addDaysIso(iso,1)).length>0; }
+/* Orario preferito (da Altro) per contesto+giorno: usato come default modificabile */
+function isWeekend(iso){ return dowIdx(parseIso(iso))>=5; }
+function prefStart(ctx,iso){ const s=state.settings;
+  if(ctx==="gym")   return s.gymPref||s.slotEvening||"18:00";
+  if(ctx==="corsa") return s.corsaPref||s.slotEvening||"18:00";
+  if(ctx==="study") return isWeekend(iso)?(s.studioPrefWe||s.slotWeekendAM||"10:00"):(s.studioPrefWd||s.slotEvening||"20:00");
+  return s.slotEvening||"18:00"; }
+function prefDur(ctx){ const s=state.settings; return ctx==="gym"?s.gymDur:ctx==="corsa"?s.corsaDur:ctx==="study"?s.studioDur:60; }
 
-/* Crea subito un evento sport/studio con default intelligenti (1 tocco) */
+/* Crea subito un evento sport/studio con i default di Altro (1 tocco, orari poi modificabili).
+   Usa l'orario preferito così com'è: l'orario di lavoro è solo uno sfondo, non un
+   conflitto, quindi una palestra alle 15:30 va bene anche in orario lavorativo. */
 function planAdd(ctx, iso){
   const s=state.settings;
-  let dur = ctx==="gym"?s.gymDur : ctx==="corsa"?s.corsaDur : ctx==="study"?s.studioDur : 60;
-  const start = findFreeSlot(iso,dur,null) || s.slotEvening || "18:00";
+  let dur = prefDur(ctx);
+  const start = prefStart(ctx,iso);
   const end = min2hm(hm2min(start)+dur);
   const rec = { id:uid("ev"), context:ctx, date:iso, start, end, note:"", done:false, categoryId:"", taskId:"", workoutId:"", examId:"", alloc:null, createdAt:now(), updatedAt:now(), deleted:false, title:"" };
   if(ctx==="gym"){ const wid=gymRotationNext(countCtxWeek(planWeek,"gym")); const w=workoutById(wid); rec.workoutId=wid; rec.title=w?w.nome:"Palestra"; if(w) rec.end=min2hm(hm2min(start)+(w.durata||dur)); }
@@ -1805,8 +1873,8 @@ function generateProposal(){
     else { cand.push({iso,pref:s.slotWeekendAM||"10:00",wknd:true}); cand.push({iso,pref:"16:00",wknd:true}); }
   });
   let gi=0; // indice rotazione palestra
-  const place=(ctx,cand)=>{ const dur = ctx==="gym"?s.gymDur:ctx==="corsa"?s.corsaDur:s.studioDur;
-    const start=findFreeSlot(cand.iso,dur,cand.pref); if(!start) return false;
+  const place=(ctx,cand)=>{ const dur = prefDur(ctx);
+    const start=findFreeSlot(cand.iso,dur,prefStart(ctx,cand.iso)); if(!start) return false;
     if(proposal.some(p=>p.date===cand.iso&&p.context===ctx)) return false; // non due uguali lo stesso giorno
     const rec={ id:"prop_"+uid(), context:ctx, date:cand.iso, start, end:min2hm(hm2min(start)+dur), _prop:true, title:CONTEXTS[ctx].label };
     if(ctx==="gym"){ const wid=gymRotationNext(gi++); const w=workoutById(wid); rec.workoutId=wid; rec.title=w?w.nome:"Palestra"; if(w) rec.end=min2hm(hm2min(start)+(w.durata||dur)); }
@@ -2033,12 +2101,11 @@ function inThisWeek(iso,monday){ const d=parseIso(iso), m=new Date(monday); m.se
 RENDER.sport = function(){
   const p=$("#page-sport"); const wkMon=mondayOf(new Date());
   const gymThisWeek=live("events").filter(e=>e.context==="gym"&&inThisWeek(e.date,wkMon));
-  const workouts=live("workouts").map(w=>{ const done=gymThisWeek.filter(e=>e.workoutId===w.id&&e.done).length; const plan=gymThisWeek.filter(e=>e.workoutId===w.id).length;
-    return `<div class="panel"><div class="panel-head"><h2><span class="catcard-dot" style="background:${w.colore};margin-right:2px"></span>${esc(w.nome)}</h2>
-      <button class="btn btn-sm btn-ghost" data-workout="${w.id}">Modifica</button></div>
-      <div class="panel-body"><div class="row-meta" style="margin-bottom:8px"><span class="tag tag-cat">${w.tipo}</span><span class="tag tag-cat">${w.durata} min</span><span class="tag tag-cat">${done}/${plan||w.frequenza} settimana</span></div>
-      <div class="mini-note" style="white-space:pre-line">${esc(w.esercizi||"")}</div>${w.note?`<div class="help">${esc(w.note)}</div>`:""}</div></div>`;
-  }).join("") || emptyBox("Nessuna scheda: creane una","i-gym");
+  const workouts=`<div class="wo-list">`+live("workouts").map(w=>{ const done=gymThisWeek.filter(e=>e.workoutId===w.id&&e.done).length; const plan=gymThisWeek.filter(e=>e.workoutId===w.id).length;
+    return `<button class="wo-item" data-workout="${w.id}"><span class="wo-dot" style="background:${w.colore}"></span>
+      <span class="wo-name">${esc(w.nome)}</span><span class="wo-dur">${w.durata} min</span>${plan?`<span class="wo-cnt">${done}/${plan}</span>`:''}</button>`;
+  }).join("")+`</div>` ;
+  const workoutsBox = live("workouts").length? workouts : emptyBox("Nessuna scheda: aggiungi Day 1, Day 2…","i-gym");
 
   const football=live("football").map(c=>{ const label=c.tipo==="partita"?(c.casa?"Partita (casa)":"Partita (trasferta)"):"Allenamento";
     const when=c.ricorrente?("ogni "+DOW_FULL[c.giorno].toLowerCase()):(c.data?fmtDayShort(c.data):"—");
@@ -2048,13 +2115,14 @@ RENDER.sport = function(){
 
   p.innerHTML=`
     <div class="grid-2">
-      <div class="stack"><div class="toolbar"><h2 style="font-size:16px;font-weight:800">Palestra</h2><div class="toolbar-r"><button class="btn btn-verde btn-sm" id="sportAddWorkout"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Scheda</button></div></div>${workouts}
+      <div class="stack"><div class="toolbar"><h2 style="font-size:16px;font-weight:800">Palestra</h2><div class="toolbar-r"><button class="btn btn-verde btn-sm" id="sportAddWorkout"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Scheda</button></div></div>
+        <div class="panel"><div class="panel-body" style="padding-top:10px">${workoutsBox}</div></div>
         <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-edit"/></svg> Note palestra</h2></div><div class="panel-body"><textarea class="textarea" id="gymNotesBox" placeholder="Progressi, carichi, promemoria…">${esc(state.gymNotes||"")}</textarea></div></div>
       </div>
       <div class="stack"><div class="toolbar"><h2 style="font-size:16px;font-weight:800">Calcio</h2><div class="toolbar-r"><button class="btn btn-verde btn-sm" id="sportAddFootball"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Impegno</button></div></div>
         <div class="panel"><div class="panel-body" style="padding-top:8px">${football}</div></div>
         <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-gym"/></svg> Palestra questa settimana</h2></div>
-          <div class="panel-body">${gymThisWeek.length?gymThisWeek.sort((a,b)=>a.date<b.date?-1:1).map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div class="row-main"><div class="row-title ${e.done?'done':''}">${esc(e.title)}</div><div class="row-meta"><span class="tag tag-cat">${fmtDayShort(e.date)} · ${e.start}</span></div></div></div>`).join(""):emptyBox("Nessuna sessione pianificata","i-gym")}</div></div>
+          <div class="panel-body">${gymThisWeek.length?gymThisWeek.sort((a,b)=>a.date<b.date?-1:1).map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div class="row-main"><div class="row-title ${e.done?'done':''}">${esc(e.title)}</div><div class="row-meta"><span class="tag tag-cat">${fmtDayShort(e.date)} · ${e.start}–${e.end}</span></div></div></div>`).join(""):emptyBox("Nessuna sessione pianificata","i-gym")}</div></div>
       </div></div>`;
   const gn=$("#gymNotesBox"); if(gn) gn.addEventListener("change",()=>{ state.gymNotes=gn.value; touchMeta("gymNotes"); save(); });
 };
@@ -2063,25 +2131,57 @@ RENDER.sport = function(){
    PAGINA STATISTICHE (aggregate)
    ============================================================ */
 RENDER.stats = function(){
-  const p=$("#page-stats"); const wkMon=mondayOf(new Date());
-  const tasksDone=live("tasks").filter(t=>t.status==="done"&&t.doneAt&&inThisWeek(t.doneAt.slice(0,10),wkMon)).length;
-  const tasksOpen=live("tasks").filter(t=>t.status!=="done").length;
-  const evByCtx={}; CTX_ORDER.forEach(c=>evByCtx[c]=0);
-  live("events").filter(e=>inThisWeek(e.date,wkMon)).forEach(e=>{ evByCtx[e.context]=(evByCtx[e.context]||0)+1; });
-  const gym=evByCtx.gym||0, foot=evByCtx.football||0;
-  const studyH=live("events").filter(e=>e.context==="study"&&inThisWeek(e.date,wkMon)).reduce((a,e)=>a+(hm2min(e.end)-hm2min(e.start))/60,0);
-  const needH=nextExamsNeed()||0;
-  const stats = statCard("Attività chiuse",tasksDone,"questa settimana","i-check",{hero:true})
-    + statCard("Attività aperte",tasksOpen,"in lavorazione","i-work")
-    + statCard("Ore di studio",Math.round(studyH)+"h","pianificate · serve ~"+Math.round(needH)+"h","i-study")
-    + statCard("Sport",gym+foot,gym+" palestra · "+foot+" calcio","i-gym");
-  const bars = CTX_ORDER.map(c=>{ const n=evByCtx[c]||0; const max=Math.max(1,...CTX_ORDER.map(x=>evByCtx[x]||0));
-    return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px"><span>${CONTEXTS[c].label}</span><span class="tnum">${n}</span></div>
-      <div class="pbar"><span style="width:${n/max*100}%;background:${ctxHex[c]}"></span></div></div>`; }).join("");
-  p.innerHTML=`<div class="stats">${stats}</div>
-    <div class="grid-2"><div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-stats"/></svg> Impegni della settimana per contesto</h2></div><div class="panel-body">${bars}</div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-flag"/></svg> Attività per priorità</h2></div><div class="panel-body">${priorityBars()}</div></div></div>`;
+  const p=$("#page-stats");
+  if(MODE==="work") return renderStatsWork(p);
+  return renderStatsPersonal(p);
 };
+/* ---- Statistiche GENERALE: solo vita personale / studio / sport ---- */
+function renderStatsPersonal(p){
+  const wkMon=mondayOf(new Date()), days=weekDaysIso(wkMon);
+  const evWeek=live("events").filter(e=>inThisWeek(e.date,wkMon));
+  const cnt=ctx=>evWeek.filter(e=>e.context===ctx);
+  const gymP=cnt("gym"), gymDone=gymP.filter(e=>e.done).length;
+  const corsaP=cnt("corsa"), corsaMin=corsaP.reduce((a,e)=>a+(hm2min(e.end)-hm2min(e.start)),0);
+  const studyP=cnt("study"), studyDone=studyP.filter(e=>e.done).length;
+  const studyH=studyP.reduce((a,e)=>a+(hm2min(e.end)-hm2min(e.start))/60,0);
+  let pagesWeek=0; live("exams").forEach(ex=>(ex.sessioni||[]).forEach(se=>{ if(se.data&&inThisWeek(se.data,wkMon)) pagesWeek+=Number(se.pagine)||0; }));
+  const needH=nextExamsNeed()||0;
+  let allen=0,part=0; days.forEach(iso=>footballBlocksForDay(iso).forEach(b=>{ /Partita/i.test(b.title)?part++:allen++; }));
+  const persC=cnt("personal").length;
+  const s=state.settings;
+  const stats = statCard("Studio",`${studyDone}/${studyP.length}`,`≈${Math.round(studyH)}h · serve ~${Math.round(needH)}h/sett`,"i-study",{hero:true,onclick:"go:study"})
+    + statCard("Palestra",`${gymDone}/${s.gymTarget}`,`${gymP.length} pianificate`,"i-gym",{onclick:"go:sport"})
+    + statCard("Corsa",`${corsaP.length}/${s.corsaTarget}`,`${corsaMin} min totali`,"i-run",{onclick:"go:sport"})
+    + statCard("Calcio",`${allen+part}`,`${allen} allen · ${part} partite`,"i-ball",{onclick:"go:sport"});
+  const order=["study","gym","corsa","football","personal"];
+  const vals={study:studyP.length,gym:gymP.length,corsa:corsaP.length,football:allen+part,personal:persC};
+  const max=Math.max(1,...order.map(c=>vals[c]));
+  const bars=order.map(c=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px"><span>${CONTEXTS[c].label}</span><span class="tnum">${vals[c]}</span></div>
+    <div class="pbar"><span style="width:${vals[c]/max*100}%;background:${ctxHex[c]}"></span></div></div>`).join("");
+  const examRows=live("exams").sort((a,b)=>a.data<b.data?-1:1).map(ex=>{ const prog=ex.pagineTot?clamp(Math.round(ex.pagineFatte/ex.pagineTot*100),0,100):0;
+    return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px"><span>${esc(ex.materia)}</span><span class="tnum">${ex.pagineFatte}/${ex.pagineTot}</span></div><div class="pbar"><span style="width:${prog}%;background:${ctxHex.study}"></span></div></div>`;
+  }).join("")||emptyBox("Nessun esame","i-study");
+  p.innerHTML=`<div class="stats">${stats}</div>
+    <div class="grid-2"><div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-stats"/></svg> Sessioni della settimana</h2></div><div class="panel-body">${bars}${pagesWeek?`<div class="help" style="margin-top:8px">Pagine studiate questa settimana: <b>${pagesWeek}</b></div>`:''}</div></div>
+    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-study"/></svg> Avanzamento esami</h2></div><div class="panel-body">${examRows}</div></div></div>`;
+}
+/* ---- Statistiche LAVORO: solo attività professionali ---- */
+function renderStatsWork(p){
+  const wkMon=mondayOf(new Date()), days=new Set(weekDaysIso(wkMon)), t0=today();
+  const open=live("tasks").filter(t=>t.status!=="done");
+  const doneWk=live("tasks").filter(t=>t.status==="done"&&t.doneAt&&inThisWeek(t.doneAt.slice(0,10),wkMon)).length;
+  const overdue=open.filter(t=>t.deadline&&t.deadline<t0).length;
+  const plannedWk=open.filter(t=>(t.plannedFor&&days.has(t.plannedFor))||(t.confirmedFor&&days.has(t.confirmedFor))).length;
+  const stats = statCard("Da fare",open.length,"attività aperte","i-work",{hero:true,onclick:"go:work"})
+    + statCard("Completate",doneWk,"questa settimana","i-check")
+    + statCard("Scadute",overdue,overdue?"da recuperare":"tutto in regola","i-warn",{onclick:"go:work"})
+    + statCard("Pianificate",plannedWk,"questa settimana","i-target");
+  const statusRow=(lab,n,col)=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px"><span>${lab}</span><span class="tnum">${n}</span></div><div class="pbar"><span style="width:${open.length?n/Math.max(1,open.length)*100:0}%;background:${col}"></span></div></div>`;
+  const todo=open.filter(t=>t.status==="todo").length, doing=open.filter(t=>t.status==="doing").length;
+  p.innerHTML=`<div class="stats">${stats}</div>
+    <div class="grid-2"><div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-flag"/></svg> Attività per priorità</h2></div><div class="panel-body">${priorityBars()}</div></div>
+    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg> Stato attività aperte</h2></div><div class="panel-body">${statusRow("Da fare",todo,"var(--blu-700)")}${statusRow("In corso",doing,"var(--ambra-600)")}${statusRow("Con scadenza",open.filter(t=>t.deadline).length,"var(--rosso-600)")}</div></div></div>`;
+}
 function priorityBars(){ const open=live("tasks").filter(t=>t.status!=="done"); const max=Math.max(1,...[1,2,3,4,5].map(pn=>open.filter(t=>t.priority===pn).length));
   return [5,4,3,2,1].map(pn=>{ const n=open.filter(t=>t.priority===pn).length; return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px"><span>P${pn} · ${PRI[pn].label}</span><span class="tnum">${n}</span></div><div class="pbar"><span style="width:${n/max*100}%;background:${PRI[pn].color}"></span></div></div>`; }).join(""); }
 
@@ -2090,10 +2190,11 @@ function priorityBars(){ const open=live("tasks").filter(t=>t.status!=="done"); 
    ============================================================ */
 RENDER.settings = function(){
   const p=$("#page-settings"); const s=state.settings;
-  const workRows = s.lavoro.map((w,i)=>`<div class="row" style="align-items:center;gap:8px">
+  const workRows = s.lavoro.map((w,i)=>`<div class="row" style="align-items:center;gap:8px;flex-wrap:wrap">
     <label class="sub" style="width:44px"><input type="checkbox" data-workon="${i}" ${w.on?"checked":""}> ${DOW[i]}</label>
-    <input type="time" class="field" data-workstart="${i}" value="${w.start}" style="min-height:38px" ${w.on?"":"disabled"}/>
-    <input type="time" class="field" data-workend="${i}" value="${w.end}" style="min-height:38px" ${w.on?"":"disabled"}/></div>`).join("");
+    <input type="time" class="field" data-workstart="${i}" value="${w.start}" style="min-height:38px;width:96px" ${w.on?"":"disabled"}/>
+    <input type="time" class="field" data-workend="${i}" value="${w.end}" style="min-height:38px;width:96px" ${w.on?"":"disabled"}/>
+    <label class="sub" style="white-space:nowrap;color:${w.smart?'var(--verde-700)':'var(--ink-500)'}"><input type="checkbox" data-worksmart="${i}" ${w.smart?"checked":""} ${w.on?"":"disabled"}> Smart</label></div>`).join("");
   p.innerHTML=`
   <div class="grid-2"><div class="stack">
     <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-user"/></svg> Profilo</h2></div>
@@ -2101,20 +2202,28 @@ RENDER.settings = function(){
     <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg> Orario di lavoro</h2></div>
       <div class="panel-body">${workRows}
         <label class="sub" style="margin-top:10px;cursor:pointer"><input type="checkbox" id="setShowWork" ${s.showWorkHours?"checked":""}> Mostra l'orario di lavoro nell'agenda</label></div></div>
-    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-week"/></svg> Obiettivi settimana &amp; pianificatore</h2></div>
-      <div class="panel-body"><div class="fgrid">
-        <div><label class="lbl">Palestra / settimana</label><input type="number" min="0" max="7" class="field" data-set="gymTarget" value="${s.gymTarget}"/></div>
-        <div><label class="lbl">Corsa / settimana</label><input type="number" min="0" max="7" class="field" data-set="corsaTarget" value="${s.corsaTarget}"/></div>
-        <div><label class="lbl">Studio (sessioni)</label><input type="number" min="0" max="14" class="field" data-set="studioTarget" value="${s.studioTarget}"/></div>
-        <div><label class="lbl">Orario preferito sera</label><input type="time" class="field" data-set="slotEvening" value="${s.slotEvening}"/></div>
-        <div><label class="lbl">Durata palestra (min)</label><input type="number" min="15" class="field" data-set="gymDur" value="${s.gymDur}"/></div>
-        <div><label class="lbl">Durata corsa (min)</label><input type="number" min="10" class="field" data-set="corsaDur" value="${s.corsaDur}"/></div>
-        <div><label class="lbl">Durata studio (min)</label><input type="number" min="20" class="field" data-set="studioDur" value="${s.studioDur}"/></div>
-        <div><label class="lbl">Weekend mattina</label><input type="time" class="field" data-set="slotWeekendAM" value="${s.slotWeekendAM}"/></div>
-      </div>
-      <label class="lbl" style="margin-top:12px">Rotazione schede palestra</label>
-      <div class="fchips" id="gymRotChips"></div>
-      <div class="help">Ordine con cui le schede vengono assegnate quando pianifichi la palestra. Vuoto = tutte in ordine.</div></div></div>
+    <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-week"/></svg> Preferenze settimana</h2></div>
+      <div class="panel-body">
+        <div class="pref-group"><div class="pref-title"><span class="dot" style="background:${ctxHex.gym}"></span>Palestra</div><div class="fgrid">
+          <div><label class="lbl">Sessioni / settimana</label><input type="number" min="0" max="7" class="field" data-set="gymTarget" value="${s.gymTarget}"/></div>
+          <div><label class="lbl">Durata (min)</label><input type="number" min="15" class="field" data-set="gymDur" value="${s.gymDur}"/></div>
+          <div class="full"><label class="lbl">Orario preferito</label><input type="time" class="field" data-set="gymPref" value="${s.gymPref}"/></div>
+        </div></div>
+        <div class="pref-group"><div class="pref-title"><span class="dot" style="background:${ctxHex.corsa}"></span>Corsa</div><div class="fgrid">
+          <div><label class="lbl">Sessioni / settimana</label><input type="number" min="0" max="7" class="field" data-set="corsaTarget" value="${s.corsaTarget}"/></div>
+          <div><label class="lbl">Durata (min)</label><input type="number" min="10" class="field" data-set="corsaDur" value="${s.corsaDur}"/></div>
+          <div class="full"><label class="lbl">Orario preferito</label><input type="time" class="field" data-set="corsaPref" value="${s.corsaPref}"/></div>
+        </div></div>
+        <div class="pref-group"><div class="pref-title"><span class="dot" style="background:${ctxHex.study}"></span>Studio</div><div class="fgrid">
+          <div><label class="lbl">Sessioni / settimana</label><input type="number" min="0" max="14" class="field" data-set="studioTarget" value="${s.studioTarget}"/></div>
+          <div><label class="lbl">Durata (min)</label><input type="number" min="20" class="field" data-set="studioDur" value="${s.studioDur}"/></div>
+          <div><label class="lbl">Orario feriali</label><input type="time" class="field" data-set="studioPrefWd" value="${s.studioPrefWd}"/></div>
+          <div><label class="lbl">Orario weekend</label><input type="time" class="field" data-set="studioPrefWe" value="${s.studioPrefWe}"/></div>
+        </div></div>
+        <label class="lbl" style="margin-top:6px">Rotazione schede palestra</label>
+        <div class="fchips" id="gymRotChips"></div>
+        <div class="help">Questi valori vengono usati come <b>default</b> quando aggiungi le sessioni nella Settimana. Gli orari restano sempre modificabili.</div>
+      </div></div>
     <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-study"/></svg> Sezioni personali</h2></div>
       <div class="panel-body"><div class="fchips"><button class="chip" data-go="study"><svg fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><use href="#i-study"/></svg> Studio</button>
       <button class="chip" data-go="sport"><svg fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><use href="#i-gym"/></svg> Sport</button>
@@ -2329,17 +2438,18 @@ function quickAddTask(title){ if(!title||!title.trim()) return; const t={id:uid(
   state.tasks.push(t); save(); renderAll(); toast("Attività aggiunta","ok"); }
 function quickAdd(kind){
   closeFab();
-  const ev = state.settings.slotEvening||"18:00";
+  const t=today();
+  const preset=(ctx)=>{ const st=prefStart(ctx,t); return {date:t,context:ctx,start:st,end:min2hm(hm2min(st)+prefDur(ctx))}; };
   switch(kind){
-    case "event": openEvent(null,{date:today(),context:ctxDefault()}); break;
+    case "event": openEvent(null,{date:t,context:ctxDefault()}); break;
     case "task":  openTask(null); break;
     case "work":  openTask(null); break;
     case "note":  openNote(null); break;
-    case "study": openEvent(null,{date:today(),context:"study",start:ev,end:min2hm(hm2min(ev)+(state.settings.studioDur||90))}); break;
-    case "gym":   openEvent(null,{date:today(),context:"gym",start:ev,end:min2hm(hm2min(ev)+(state.settings.gymDur||75))}); break;
-    case "corsa": openEvent(null,{date:today(),context:"corsa",start:ev,end:min2hm(hm2min(ev)+(state.settings.corsaDur||45))}); break;
+    case "study": openEvent(null,preset("study")); break;
+    case "gym":   openEvent(null,preset("gym")); break;
+    case "corsa": openEvent(null,preset("corsa")); break;
     case "football": openFootball(null); break;
-    default: openEvent(null,{date:today(),context:ctxDefault()});
+    default: openEvent(null,{date:t,context:ctxDefault()});
   }
 }
 
@@ -2684,6 +2794,7 @@ function bindDelegated(){
     else if(t.dataset.workon!=null){ state.settings.lavoro[+t.dataset.workon].on=t.checked; touchMeta("settings"); save(); RENDER.settings(); }
     else if(t.dataset.workstart!=null){ state.settings.lavoro[+t.dataset.workstart].start=t.value; touchMeta("settings"); save(); }
     else if(t.dataset.workend!=null){ state.settings.lavoro[+t.dataset.workend].end=t.value; touchMeta("settings"); save(); }
+    else if(t.dataset.worksmart!=null){ state.settings.lavoro[+t.dataset.worksmart].smart=t.checked; touchMeta("settings"); save(); RENDER.settings(); }
     else if(t.dataset.catname!=null){ const c=catById(t.dataset.catname); if(c){ c.name=t.value.slice(0,60); c.updatedAt=now(); save(); } }
     else if(t.dataset.catcolor!=null){ const c=catById(t.dataset.catcolor); if(c){ c.color=t.value; c.updatedAt=now(); save(); renderAll(); } }
     else if(t.dataset.set!=null){ const k=t.dataset.set; const v = t.type==="number"?(Number(t.value)||0):t.value; state.settings[k]=v; touchMeta("settings"); save(); } });
