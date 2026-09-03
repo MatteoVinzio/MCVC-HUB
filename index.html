@@ -220,6 +220,7 @@ body.mode-work .mode-switch button.on{background:linear-gradient(160deg,var(--ve
 .fchips{display:flex;gap:7px;flex-wrap:wrap;}
 /* Blocco filtri Categorie */
 .wfilters{background:#fff;border-radius:var(--r-md);box-shadow:var(--sh-1);padding:12px 14px;margin-bottom:16px;display:flex;flex-direction:column;gap:9px;}
+.wfilters[hidden]{display:none;}
 .wfrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .wfrow>.flabel{width:74px;flex:none;}
 .wcount{font-size:12px;font-weight:700;color:var(--ink-500);}
@@ -326,6 +327,10 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .subtxt{font-size:12.5px;line-height:1.35;}
 .subrow.done .subtxt{text-decoration:line-through;color:var(--ink-400);}
 .head-actions{display:flex;align-items:center;gap:6px;flex:none;}
+/* Da dire */
+.say-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:800;flex:none;}
+.say-age{font-size:11.5px;color:var(--ink-500);}
+.tag svg{flex:none;}
 /* Proiezione studio */
 .study-proj{margin-top:12px;border-top:1px solid var(--ink-100);padding-top:10px;display:flex;flex-direction:column;gap:8px;}
 .proj-row{display:flex;align-items:center;gap:10px;}
@@ -342,7 +347,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 @media (max-width:600px){ .iact{width:40px;height:40px;} .task-actions{gap:0;} }
 
 /* ---------------- Agenda timeline ---------------- */
-.ag-layout{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start;}
+.ag-layout{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start;}
 .ag-main{background:#fff;border-radius:var(--r-lg);box-shadow:var(--sh-2);overflow:hidden;}
 .ag-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--ink-100);flex-wrap:wrap;}
 .ag-date{font-size:16px;font-weight:800;letter-spacing:-.01em;text-transform:capitalize;}
@@ -399,35 +404,34 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 
 /* ---------------- Agenda: vista SETTIMANA a griglia oraria ---------------- */
 :root{--wk-hour:46px;}
-.wkcal{--wk-time:52px;position:relative;overflow:auto;max-height:calc(100dvh - 200px);}
-.wkcal-head{display:grid;grid-template-columns:var(--wk-time) repeat(7,1fr);position:sticky;top:0;z-index:8;background:#fff;border-bottom:1px solid var(--ink-200);}
-.wkcal-corner{border-right:1px solid var(--ink-100);}
+.wkcal{--wk-time:48px;--wk-day:minmax(104px,1fr);position:relative;overflow:auto;max-height:calc(100dvh - 200px);background:#fff;}
+.wkcal-head{display:grid;grid-template-columns:var(--wk-time) repeat(7,var(--wk-day));position:sticky;top:0;z-index:9;background:#fff;border-bottom:1px solid var(--ink-200);}
+.wkcal-corner{border-right:1px solid var(--ink-100);position:sticky;left:0;background:#fff;z-index:2;}
 .wkcal-dh{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 7px;border-right:1px solid var(--ink-100);cursor:pointer;background:none;}
 .wkcal-dh span{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-500);}
 .wkcal-dh b{font-size:16px;color:var(--ink-900);line-height:1;}
 .wkcal-dh:hover{background:var(--blu-50);}
 .wkcal-dh.today span{color:var(--blu-700);}
 .wkcal-dh.today b{color:#fff;background:var(--blu-800);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;margin-top:1px;}
-.wkcal-body{display:grid;grid-template-columns:var(--wk-time) repeat(7,1fr);position:relative;}
-.wkcal-times{position:relative;}
+.wkcal-body{display:grid;grid-template-columns:var(--wk-time) repeat(7,var(--wk-day));position:relative;}
+.wkcal-times{position:sticky;left:0;background:#fff;z-index:4;}
 .wkcal-times .hl{height:var(--wk-hour);font-size:10.5px;font-weight:600;color:var(--ink-400);text-align:right;padding-right:7px;transform:translateY(-6px);}
-.wkcal-col{position:relative;border-left:1px solid var(--ink-100);}
+.wkcal-col{position:relative;border-left:1px solid var(--ink-100);min-width:0;}
 .wkcal-col.today{background:var(--blu-50);}
 .wkcal-col .wslots{position:absolute;inset:0;}
 .wkcal-col .wslot{height:var(--wk-hour);border-bottom:1px dashed var(--ink-100);cursor:pointer;}
 .wkcal-col .wslot:hover{background:var(--blu-100);}
-.wkev{position:absolute;left:2px;right:2px;border-radius:6px;padding:3px 5px;overflow:hidden;cursor:pointer;border-left:3px solid;
-  font-size:10.5px;line-height:1.15;box-shadow:var(--sh-1);z-index:3;}
+.wkev{position:absolute;left:2px;right:2px;border-radius:6px;padding:3px 6px;overflow:hidden;cursor:pointer;border-left:3px solid;
+  font-size:11px;line-height:1.2;box-shadow:var(--sh-1);z-index:3;}
 .wkev .wkev-t{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.wkev .wkev-h{font-size:9.5px;opacity:.8;font-weight:700;}
+.wkev .wkev-h{font-size:10px;opacity:.85;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .wkev.busy{background:var(--ink-100)!important;border-color:var(--ink-300)!important;color:var(--ink-500)!important;}
 .wkev.workband{background:rgba(29,90,143,.06);border:1px solid rgba(29,90,143,.12);border-left:3px solid rgba(29,90,143,.3);box-shadow:none;pointer-events:none;color:var(--ctx-work);z-index:0;}
 .wkcal .nowline{z-index:6;}
 @media (max-width:960px){
-  .wkcal{--wk-time:40px;max-height:none;}
-  .wkev{font-size:9px;padding:2px 3px;}
-  .wkcal-dh b{font-size:14px;}
-  .wkcal-dh span{font-size:9.5px;}
+  /* Su mobile la griglia scorre in orizzontale: colonne larghe e leggibili. */
+  .wkcal{--wk-time:44px;--wk-day:118px;max-height:calc(100dvh - 230px);-webkit-overflow-scrolling:touch;}
+  .wkcal-dh b{font-size:15px;}
 }
 
 /* ---------------- Pianifica settimana (planner) ---------------- */
@@ -660,49 +664,49 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 <!-- ============ ICONE (sprite SVG) ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
-<g id="i-today"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 1.6"/></g>
-<g id="i-agenda"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/><circle cx="8" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="16" cy="14" r="1"/><circle cx="8" cy="17.4" r="1"/><circle cx="12" cy="17.4" r="1"/></g>
-<g id="i-work"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8 7V5.5A2.5 2.5 0 0110.5 3h3A2.5 2.5 0 0116 5.5V7"/><path d="M2.5 12.5h19"/></g>
-<g id="i-study"><path d="M12 6.2C10.4 5.1 8.1 4.7 4.5 4.7v13.1c3.6 0 5.9.4 7.5 1.5 1.6-1.1 3.9-1.5 7.5-1.5V4.7c-3.6 0-5.9.4-7.5 1.5z"/><path d="M12 6.2v13.1"/></g>
-<g id="i-gym"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></g>
-<g id="i-ball"><circle cx="12" cy="12" r="9"/><path d="M12 7l4.76 3.45-1.82 5.55H9.06L7.24 10.45z"/><path d="M12 7V3M16.94 16l2.5 3M7.06 16l-2.5 3M7.24 10.45L4 8M16.76 10.45L20 8"/></g>
-<g id="i-stats"><path d="M4 20h16"/><path d="M6.5 20v-6M12 20V8.5M17.5 20v-9"/></g>
-<g id="i-cats"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></g>
-<g id="i-say"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></g>
-<g id="i-more"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></g>
-<g id="i-plus"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></g>
-<g id="i-clock"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
-<g id="i-target"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></g>
-<g id="i-search"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></g>
-<g id="i-people"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4a3.2 3.2 0 010 6.4M21 20c0-2.5-1.4-4.7-3.5-5.6"/></g>
-<g id="i-list"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></g>
-<g id="i-sliders"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></g>
-<g id="i-dl"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></g>
-<g id="i-ul"><path d="M12 21V9m0 0L8 13m4-4l4 4M4 3h16"/></g>
-<g id="i-print"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2M6 14h12v7H6z"/></g>
-<g id="i-reset"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></g>
-<g id="i-menu"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></g>
-<g id="i-left"><path d="M15 18l-6-6 6-6"/></g>
-<g id="i-right"><path d="M9 6l6 6-6 6"/></g>
-<g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>
-<g id="i-check"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></g>
-<g id="i-close"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></g>
-<g id="i-trash"><path d="M3 6h18M8 6V4.5A1.5 1.5 0 019.5 3h5A1.5 1.5 0 0116 4.5V6M6.5 6l.9 13a1.6 1.6 0 001.6 1.5h6a1.6 1.6 0 001.6-1.5L17.5 6"/><path d="M10 10.5v6M14 10.5v6"/></g>
-<g id="i-arrow"><path d="M5 12h14M13 6l6 6-6 6"/></g>
-<g id="i-cal"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></g>
-<g id="i-flag"><path d="M4 21V4M4 4h13l-2 4 2 4H4"/></g>
-<g id="i-user"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></g>
-<g id="i-general"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.3 4 5.6 4 9s-1.4 6.7-4 9c-2.6-2.3-4-5.6-4-9s1.4-6.7 4-9z"/></g>
-<g id="i-warn"><path d="M12 3l9 16H3z"/><path d="M12 9v5M12 17h.01"/></g>
-<g id="i-edit"><path d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></g>
-<g id="i-gear"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-2.7 1.1V21a2 2 0 11-4 0v-.1A1.6 1.6 0 006 19.4l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00-1.1-2.7H2a2 2 0 110-4h.1A1.6 1.6 0 003.2 6l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H8a1.6 1.6 0 001-1.5V2a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V8a1.6 1.6 0 001.5 1H22a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></g>
-<g id="i-logout"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></g>
-<g id="i-cloud"><path d="M18 10a5 5 0 00-9.6-1.5A4 4 0 106 18h11a4 4 0 001-7.9z"/></g>
-<g id="i-copy"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></g>
-<g id="i-page"><path d="M14 3v5h5"/><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V8z"/></g>
-<g id="i-run"><circle cx="13" cy="4" r="1.4"/><path d="M4 17l5 1 .75-1.5"/><path d="M15 21v-4l-4-3 1-6"/><path d="M7 12V9l5-1 3 3 3 1"/></g>
-<g id="i-week"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/><rect x="6" y="12.4" width="12" height="3.4" rx="1.3"/></g>
-<g id="i-bolt"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></g>
+<symbol id="i-today" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 1.6"/></symbol>
+<symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/><circle cx="8" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="16" cy="14" r="1"/><circle cx="8" cy="17.4" r="1"/><circle cx="12" cy="17.4" r="1"/></symbol>
+<symbol id="i-work" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8 7V5.5A2.5 2.5 0 0110.5 3h3A2.5 2.5 0 0116 5.5V7"/><path d="M2.5 12.5h19"/></symbol>
+<symbol id="i-study" viewBox="0 0 24 24"><path d="M12 6.2C10.4 5.1 8.1 4.7 4.5 4.7v13.1c3.6 0 5.9.4 7.5 1.5 1.6-1.1 3.9-1.5 7.5-1.5V4.7c-3.6 0-5.9.4-7.5 1.5z"/><path d="M12 6.2v13.1"/></symbol>
+<symbol id="i-gym" viewBox="0 0 24 24"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></symbol>
+<symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7l4.76 3.45-1.82 5.55H9.06L7.24 10.45z"/><path d="M12 7V3M16.94 16l2.5 3M7.06 16l-2.5 3M7.24 10.45L4 8M16.76 10.45L20 8"/></symbol>
+<symbol id="i-stats" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M6.5 20v-6M12 20V8.5M17.5 20v-9"/></symbol>
+<symbol id="i-cats" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-say" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4a3.2 3.2 0 010 6.4M21 20c0-2.5-1.4-4.7-3.5-5.6"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></symbol>
+<symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 21V9m0 0L8 13m4-4l4 4M4 3h16"/></symbol>
+<symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2M6 14h12v7H6z"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></symbol>
+<symbol id="i-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4.5A1.5 1.5 0 019.5 3h5A1.5 1.5 0 0116 4.5V6M6.5 6l.9 13a1.6 1.6 0 001.6 1.5h6a1.6 1.6 0 001.6-1.5L17.5 6"/><path d="M10 10.5v6M14 10.5v6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 21V4M4 4h13l-2 4 2 4H4"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+<symbol id="i-general" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.3 4 5.6 4 9s-1.4 6.7-4 9c-2.6-2.3-4-5.6-4-9s1.4-6.7 4-9z"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 9v5M12 17h.01"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-2.7 1.1V21a2 2 0 11-4 0v-.1A1.6 1.6 0 006 19.4l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00-1.1-2.7H2a2 2 0 110-4h.1A1.6 1.6 0 003.2 6l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H8a1.6 1.6 0 001-1.5V2a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V8a1.6 1.6 0 001.5 1H22a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10a5 5 0 00-9.6-1.5A4 4 0 106 18h11a4 4 0 001-7.9z"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></symbol>
+<symbol id="i-page" viewBox="0 0 24 24"><path d="M14 3v5h5"/><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V8z"/></symbol>
+<symbol id="i-run" viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.4"/><path d="M4 17l5 1 .75-1.5"/><path d="M15 21v-4l-4-3 1-6"/><path d="M7 12V9l5-1 3 3 3 1"/></symbol>
+<symbol id="i-week" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/><rect x="6" y="12.4" width="12" height="3.4" rx="1.3"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></symbol>
 </defs>
 </svg>
 
@@ -1055,6 +1059,7 @@ const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate(
 const parseIso = s => { const [y,m,dd]=String(s).split("-").map(Number); return new Date(y,(m||1)-1,dd||1); };
 const today = () => isoDate(new Date());
 const now   = () => new Date().toISOString();
+const daysAgo = ts => { if(!ts) return 0; const d=new Date(ts); if(isNaN(d)) return 0; return Math.max(0,Math.floor((Date.now()-d.getTime())/86400000)); };
 const addDays = (d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
 const addDaysIso = (iso,n)=>isoDate(addDays(parseIso(iso),n));
 const dowIdx = d => (d.getDay()+6)%7;                 // 0 = lunedì
@@ -1738,11 +1743,14 @@ RENDER.today = function(){
       + statCard("Attività urgenti",urgent,"priorità alta o critica","i-flag",{onclick:"go:work"})
       + statCard("Scadenze aperte",openDeadlines.length, nextDl?("prossima "+fmtDayShort(nextDl.deadline)):"nessuna","i-cal",{onclick:"go:work"});
   } else {
+    // Quotidiano: niente "Piano di oggi" (è roba di lavoro); focus su vita personale.
     const needH = nextExamsNeed();
-    stats = statCard("Piano di oggi",planCount,planCount?"attività di lavoro":"niente pianificato","i-target",{hero:true,onclick:"go:work"})
-      + statCard("Impegni di oggi",dayEvents.length,"nell'agenda unificata","i-agenda",{onclick:"go:agenda"})
+    const wkMon=mondayOf(new Date());
+    const sportCount=live("events").filter(e=>(e.context==="gym"||e.context==="corsa")&&inThisWeek(e.date,wkMon)).length;
+    stats = statCard("Impegni di oggi",dayEvents.length,"nell'agenda unificata","i-agenda",{hero:true,onclick:"go:agenda"})
       + statCard("Prossima scadenza",nextDl?fmtDayShort(nextDl.deadline):"—", nextDl?esc(nextDl.title).slice(0,26):"nessuna scadenza","i-cal",{onclick:"go:work"})
-      + statCard("Studio settimana",needH!=null?Math.round(needH)+"h":"—","fabbisogno stimato","i-study",{onclick:"go:study"});
+      + statCard("Studio settimana",needH!=null?Math.round(needH)+"h":"—","fabbisogno stimato","i-study",{onclick:"go:study"})
+      + statCard("Sport settimana",sportCount,"palestra e corsa","i-gym",{onclick:"go:sport"});
   }
 
   let mainCol, sideCol;
@@ -1905,15 +1913,6 @@ RENDER.agenda = function(){
   const filterChips = CTX_ORDER.map(c=>`<button class="chip ${ctxFilter.has(c)?'on-verde':''}" data-ctxf="${c}" style="${ctxFilter.has(c)?'background:'+ctxHex[c]:''}"><span class="dot" style="background:${ctxFilter.has(c)?'#fff':ctxHex[c]}"></span>${CONTEXTS[c].label}</button>`).join("");
   p.innerHTML = `
   <div class="ag-layout">
-    <div class="stack">
-      <section class="cal"><div class="cal-head"><div class="cal-title" id="calTitle"></div>
-        <div style="display:flex;gap:2px"><button class="icon-btn" id="prevMonth" aria-label="Mese precedente"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-left"/></svg></button>
-        <button class="icon-btn" id="nextMonth" aria-label="Mese successivo"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-right"/></svg></button></div></div>
-        <div class="wk"><span>Lun</span><span>Mar</span><span>Mer</span><span>Gio</span><span>Ven</span><span>Sab</span><span>Dom</span></div>
-        <div class="days" id="calDays"></div></section>
-      <section class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-sliders"/></svg> Mostra contesti</h2></div>
-        <div class="panel-body"><div class="fchips">${filterChips}</div></div></section>
-    </div>
     <section class="ag-main">
       <div class="ag-head"><div style="min-width:0"><div class="ag-date" id="agDate"></div><div class="ag-sub" id="agSub"></div></div>
         <div class="ag-nav"><div class="seg" id="agView"><button data-view="day" class="${agView==='day'?'active':''}">Giorno</button><button data-view="week" class="${agView==='week'?'active':''}">Settimana</button></div>
@@ -1924,6 +1923,15 @@ RENDER.agenda = function(){
       <div id="agClash"></div>
       <div id="agBody"></div>
     </section>
+    <div class="stack">
+      <section class="cal"><div class="cal-head"><div class="cal-title" id="calTitle"></div>
+        <div style="display:flex;gap:2px"><button class="icon-btn" id="prevMonth" aria-label="Mese precedente"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-left"/></svg></button>
+        <button class="icon-btn" id="nextMonth" aria-label="Mese successivo"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-right"/></svg></button></div></div>
+        <div class="wk"><span>Lun</span><span>Mar</span><span>Mer</span><span>Gio</span><span>Ven</span><span>Sab</span><span>Dom</span></div>
+        <div class="days" id="calDays"></div></section>
+      <section class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-sliders"/></svg> Mostra contesti</h2></div>
+        <div class="panel-body"><div class="fchips">${filterChips}</div></div></section>
+    </div>
   </div>`;
   renderMiniCal(); renderAgBody();
 };
@@ -2193,12 +2201,26 @@ function planDayCard(iso){
 /* ============================================================
    PAGINA LAVORO — attività per categoria (da Agenda Operativa)
    ============================================================ */
-let wf = { q:"", stato:new Set(), pri:new Set(), scad:"all", piano:"all", cats:new Set(), sort:"pri" };
+let wf = { q:"", stato:new Set(), pri:new Set(), scad:"all", piano:"all", cats:new Set(), sort:"pri", preset:"tutte" };
+let wfOpen=false; // il pannello filtri avanzati è chiuso di default: lo apre l'utente
 function wfActive(){ return !!(wf.q||wf.stato.size||wf.pri.size||wf.cats.size||wf.scad!=="all"||wf.piano!=="all"); }
-function wfClear(){ wf={ q:"", stato:new Set(), pri:new Set(), scad:"all", piano:"all", cats:new Set(), sort:wf.sort }; RENDER.work(); }
+function wfClear(){ wf={ q:"", stato:new Set(), pri:new Set(), scad:"all", piano:"all", cats:new Set(), sort:wf.sort, preset:"tutte" }; RENDER.work(); }
+/* Preset rapidi "Mostra" (come nell'Agenda Operativa): impostano i filtri con un tocco. */
+function wfSetPreset(name){
+  const keepCats=wf.cats, keepSort=wf.sort, keepQ=wf.q;
+  wf={ q:keepQ, stato:new Set(), pri:new Set(), scad:"all", piano:"all", cats:keepCats, sort:keepSort, preset:name };
+  if(name==="dafare") wf.stato=new Set(["todo","doing"]);
+  else if(name==="piano") wf.piano="oggi";
+  else if(name==="alta") wf.pri=new Set([5,4]);
+  else if(name==="scadute") wf.scad="scadute";
+  // "tutte" → nessun filtro (mostra tutto, chiuse comprese)
+  RENDER.work();
+}
 RENDER.work = function(){
   const p=$("#page-work"); const cats=live("categories").filter(c=>!c.archived).sort((a,b)=>a.order-b.order);
   const chip=(active,attr,val,label)=>`<button class="chip ${active?'on':''}" data-${attr}="${val}">${label}</button>`;
+  const presets=[["dafare","Da fare"],["piano","Nel piano di oggi"],["alta","Priorità alta"],["scadute","Scadute"],["tutte","Tutte, chiuse comprese"]]
+    .map(([k,l])=>`<button class="chip ${wf.preset===k?'on':''}" data-wpreset="${k}">${l}</button>`).join("");
   const statoChips=[["todo","Da fare"],["doing","In corso"],["done","Completate"]].map(([k,l])=>chip(wf.stato.has(k),"wstato",k,l)).join("");
   const scadChips=[["all","Tutte"],["scadute","Scadute"],["oggi","Oggi"],["7gg","Entro 7 giorni"],["nodate","Senza data"]].map(([k,l])=>chip(wf.scad===k,"wscad",k,l)).join("");
   const pianoChips=[["all","Indifferente"],["oggi","Nel piano di oggi"],["fuori","Fuori dal piano"],["rinviate","Rinviate"]].map(([k,l])=>chip(wf.piano===k,"wpiano",k,l)).join("");
@@ -2208,20 +2230,25 @@ RENDER.work = function(){
     <div class="toolbar"><div class="search"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search"/></svg>
       <input class="field" id="workSearch" placeholder="Cerca titolo, note o categoria…" value="${esc(wf.q)}" /></div>
       <div class="toolbar-r">
-        <select class="select" id="workSort" style="min-height:38px;width:auto;flex:none">
+        <button class="btn btn-light btn-sm ${wfOpen?'on':''}" id="wfToggle"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-list"/></svg> Filtri${wfActive()?' •':''}</button>
+        <button class="btn btn-light btn-sm" id="openCats"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-sliders"/></svg> Categorie</button>
+        <button class="btn btn-verde btn-sm" id="workAddTask"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Attività</button></div></div>
+    <div class="toolbar" style="margin-top:-6px"><span class="flabel">Mostra</span><div class="fchips">${presets}</div></div>
+    <div class="wfilters" ${wfOpen?'':'hidden'}>
+      <div class="wfrow" style="justify-content:space-between;border-bottom:1px solid var(--ink-100);padding-bottom:9px;margin-bottom:2px">
+        <span style="display:flex;gap:10px;align-items:center"><span class="flabel" style="width:auto">Ordina</span>
+        <select class="select" id="workSort" style="min-height:34px;width:auto;flex:none;font-size:13px">
           <option value="pri" ${wf.sort==="pri"?"selected":""}>Priorità (alta → bassa)</option>
           <option value="scad" ${wf.sort==="scad"?"selected":""}>Scadenza (prima le vicine)</option>
           <option value="title" ${wf.sort==="title"?"selected":""}>Titolo (A → Z)</option>
-        </select>
-        <button class="btn btn-light btn-sm" id="openCats"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-sliders"/></svg> Categorie</button>
-        <button class="btn btn-verde btn-sm" id="workAddTask"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Attività</button></div></div>
-    <div class="wfilters">
+        </select></span>
+        ${wfActive()?`<button class="btn btn-light btn-sm" id="workClearF"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-close"/></svg> Azzera</button>`:"<span></span>"}</div>
       <div class="wfrow"><span class="flabel">Stato</span><div class="fchips">${statoChips}</div></div>
       <div class="wfrow"><span class="flabel">Scadenza</span><div class="fchips">${scadChips}</div></div>
       <div class="wfrow"><span class="flabel">Piano</span><div class="fchips">${pianoChips}</div></div>
       <div class="wfrow"><span class="flabel">Priorità</span><div class="fchips">${priChips}</div></div>
       <div class="wfrow"><span class="flabel">Categorie</span><div class="fchips">${catChips}</div></div>
-      <div class="wfrow" style="justify-content:space-between"><span class="wcount" id="workCount"></span>${wfActive()?`<button class="btn btn-light btn-sm" id="workClearF"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-close"/></svg> Azzera filtri</button>`:"<span></span>"}</div>
+      <div class="wfrow"><span class="wcount" id="workCount"></span></div>
     </div>
     <div class="cats" id="workGrid"></div>
     <button class="btn btn-verde btn-block" id="workAddBottom" style="margin-top:16px"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Aggiungi qui una nuova attività</button>`;
@@ -2282,39 +2309,72 @@ function renderCatMgr(){
 /* ============================================================
    PAGINA DA DIRE — punti per persona (da Agenda Operativa)
    ============================================================ */
-let sayFilter="all";
+let sayFilter="dafare", saySearch="";
 RENDER.say = function(){
   const p=$("#page-say");
-  const chips=[["all","Tutti"],["dire","Da dire"],["chiedere","Da chiedere"],["open","Aperti"]]
+  const chips=[["dafare","Da fare"],["urgenti","Solo urgenti"],["chiedere","Solo da chiedere"],["dire","Solo da dire"],["tutti","Tutti, detti compresi"]]
     .map(([k,l])=>`<button class="chip ${sayFilter===k?'on':''}" data-sayf="${k}">${l}</button>`).join("");
   p.innerHTML=`
     <div class="toolbar"><div class="search"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search"/></svg>
-      <input class="field" id="saySearch" placeholder="Cerca fra i punti…" /></div>
-      <div class="toolbar-r"><button class="btn btn-verde btn-sm" id="sayAdd"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Punto</button></div></div>
+      <input class="field" id="saySearch" placeholder="Cerca fra i punti…" value="${esc(saySearch)}" /></div>
+      <div class="toolbar-r"><button class="btn btn-light btn-sm" id="sayPeople"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-people"/></svg> Persone</button>
+      <button class="btn btn-verde btn-sm" id="sayAdd"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Punto</button></div></div>
     <div class="toolbar" style="margin-top:-6px"><span class="flabel">Mostra</span><div class="fchips">${chips}</div></div>
     <div class="cats" id="sayGrid"></div>`;
   renderSayGrid();
 };
+function sayMatch(n){
+  if(sayFilter==="dafare") return !n.done;
+  if(sayFilter==="urgenti") return !n.done && n.urgency>=3;
+  if(sayFilter==="chiedere") return !n.done && n.kind==="chiedere";
+  if(sayFilter==="dire") return !n.done && n.kind==="dire";
+  return true; // tutti, detti compresi
+}
 function renderSayGrid(){
   const grid=$("#sayGrid"); const people=live("people").filter(p=>!p.archived).sort((a,b)=>a.order-b.order);
-  const q=($("#saySearch")&&$("#saySearch").value||"").toLowerCase();
+  const q=saySearch.toLowerCase();
   let html="";
-  people.forEach(pe=>{ let notes=live("notes").filter(n=>n.personId===pe.id);
-    notes=notes.filter(n=>{ if(sayFilter==="dire") return n.kind==="dire"; if(sayFilter==="chiedere") return n.kind==="chiedere"; if(sayFilter==="open") return !n.done; return true; });
+  people.forEach(pe=>{ let notes=live("notes").filter(n=>n.personId===pe.id).filter(sayMatch);
     if(q) notes=notes.filter(n=>n.text.toLowerCase().includes(q));
-    notes.sort((a,b)=>(b.urgency-a.urgency)||((a.done?1:0)-(b.done?1:0)));
-    if(!notes.length && (sayFilter!=="all"||q)) return;
-    html+=`<div class="catcard"><div class="catcard-head"><span class="catcard-dot" style="background:${pe.color}"></span>
-      <span class="catcard-name">${esc(pe.name)}</span><span class="catcard-count">${notes.filter(n=>!n.done).length}</span></div>
-      <div class="catcard-body">${notes.length?notes.map(noteRow).join(""):`<div class="help" style="padding:10px">Nessun punto</div>`}</div></div>`;
+    notes.sort((a,b)=>((a.done?1:0)-(b.done?1:0))||(b.urgency-a.urgency));
+    if(!notes.length && (sayFilter!=="tutti"||q)) return;
+    const openN=notes.filter(n=>!n.done).length;
+    const urg=notes.filter(n=>!n.done&&n.urgency>=3).length;
+    html+=`<div class="catcard"><div class="catcard-head">
+      <span class="say-avatar" style="background:${hexToRgba(pe.color,.16)};color:${pe.color}">${esc((pe.name.trim()[0]||'?').toUpperCase())}</span>
+      <span class="catcard-name">${esc(pe.name)}</span>
+      ${urg?`<span class="tag tag-late">${urg} urgente${urg>1?'':''}</span>`:''}
+      <span class="catcard-count">${openN}</span></div>
+      <div class="catcard-body">${notes.length?notes.map(noteRow).join(""):`<div class="help" style="padding:10px">Nessun punto</div>`}
+      <button class="btn btn-sm btn-ghost btn-block catcard-add" data-sayadd="${pe.id}"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-plus"/></svg> Aggiungi un punto</button></div></div>`;
   });
-  grid.innerHTML = html || emptyBox("Nessun punto da dire","i-say");
+  grid.innerHTML = html || emptyBox(live("people").length?"Nessun punto con questo filtro":"Aggiungi una persona e un punto","i-say");
 }
-function noteRow(n){ return `<div class="row" data-note="${n.id}" style="cursor:pointer">
-  <button class="check ${n.done?'done':''}" data-notetoggle="${n.id}"><svg fill="none" stroke="currentColor" stroke-width="3"><use href="#i-check"/></svg></button>
-  <div class="row-main"><div class="row-title ${n.done?'done':''}" style="font-size:13.5px">${esc(n.text)}</div>
-    <div class="row-meta"><span class="tag" style="background:${n.kind==='chiedere'?'#4B3E861a':'#174B7A1a'};color:${n.kind==='chiedere'?'#4B3E86':'#174B7A'}">${n.kind==="chiedere"?"Da chiedere":"Da dire"}</span>
-    <span class="tag" style="background:${URG[n.urgency].color}1a;color:${URG[n.urgency].color}">${URG[n.urgency].label}</span></div></div></div>`; }
+function noteRow(n){
+  const days=daysAgo(n.createdAt);
+  const kindLabel=n.kind==="chiedere"?"Da chiedere":"Da dire";
+  const kindCol=n.kind==="chiedere"?"#4B3E86":"#174B7A";
+  return `<div class="task-item ${n.done?'is-done':''}">
+    <div class="task-line">
+      <button class="check ${n.done?'done':''}" data-notetoggle="${n.id}" title="${n.done?'Segna da fare':'Segna fatto'}" aria-label="Fatto"><svg fill="none" stroke="currentColor" stroke-width="3"><use href="#i-check"/></svg></button>
+      <div class="task-main" data-note="${n.id}">
+        <div class="row-title ${n.done?'done':''}">${esc(n.text)}</div>
+        <div class="row-meta">
+          <span class="tag" style="background:${hexToRgba(kindCol,.12)};color:${kindCol}"><svg style="width:12px;height:12px" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-say"/></svg> ${kindLabel}</span>
+          ${n.urgency>=3?`<span class="tag tag-late">Urgente</span>`:""}
+          ${(!n.done&&days>0)?`<span class="say-age">in sospeso da ${days} ${days===1?'giorno':'giorni'}</span>`:""}
+        </div>
+      </div>
+      <div class="task-actions">
+        <button class="iact" data-note="${n.id}" title="Modifica" aria-label="Modifica"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-edit"/></svg></button>
+        <button class="iact danger" data-notedel="${n.id}" title="Elimina" aria-label="Elimina"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-trash"/></svg></button>
+      </div>
+    </div>
+  </div>`;
+}
+function delNoteConfirm(id){ const n=(state.notes||[]).find(x=>x.id===id); if(!n) return;
+  if(!confirm(`Eliminare il punto «${n.text}»?`)) return;
+  n.deleted=true; n.updatedAt=now(); save(); renderAll(); toast("Punto eliminato"); }
 
 /* ============================================================
    PAGINA STUDIO (da DayOS): esami, avanzamento, pianificazione
@@ -2642,10 +2702,10 @@ function delTask(){ const id=$("#taskId").value; const t=state.tasks.find(x=>x.i
 function toggleTask(id){ const t=taskById(id); if(!t) return; t.status=t.status==="done"?"todo":"done"; t.doneAt=t.status==="done"?now():""; t.updatedAt=now(); save(); renderAll(); }
 
 /* ---------------- PUNTO DA DIRE ---------------- */
-function openNote(n){
+function openNote(n, preset){
   $("#noteModalTitle").textContent=n?"Modifica punto":"Nuovo punto";
   if(!live("people").length){ addQuickPerson(); }
-  $("#noteId").value=n?n.id:""; fillPeopleSelect($("#notePerson"), n?n.personId:"");
+  $("#noteId").value=n?n.id:""; fillPeopleSelect($("#notePerson"), n?n.personId:((preset&&preset.personId)||""));
   $("#noteKind").value=n?n.kind:"dire"; $("#noteUrg").value=n?n.urgency:2; $("#noteText").value=n?n.text:"";
   $("#delNoteBtn").hidden=!n; openModal("noteModal"); setTimeout(()=>$("#noteText").focus(),80);
 }
@@ -3055,6 +3115,8 @@ function bindDelegated(){
     if((x=e.target.closest("[data-taskedit]"))){ e.stopPropagation(); openTask(taskById(x.dataset.taskedit)); return; }
     if((x=e.target.closest("[data-taskdel]"))){ e.stopPropagation(); delTaskConfirm(x.dataset.taskdel); return; }
     if((x=e.target.closest("[data-notetoggle]"))){ e.stopPropagation(); toggleNote(x.dataset.notetoggle); return; }
+    if((x=e.target.closest("[data-notedel]"))){ e.stopPropagation(); delNoteConfirm(x.dataset.notedel); return; }
+    if((x=e.target.closest("[data-sayadd]"))){ openNote(null,{personId:x.dataset.sayadd}); return; }
     if((x=e.target.closest("[data-studydone]"))){ e.stopPropagation(); openStudyLog(x.dataset.studydone); return; }
     if((x=e.target.closest("[data-task]"))){ openTask(taskById(x.dataset.task)); return; }
     if((x=e.target.closest("[data-note]"))){ openNote((state.notes||[]).find(n=>n.id===x.dataset.note)); return; }
@@ -3065,10 +3127,12 @@ function bindDelegated(){
     if((x=e.target.closest("[data-act]"))){ const a=x.dataset.act; if(a&&a.startsWith("go:")) setPage(a.slice(3)); return; }
     if((x=e.target.closest("[data-go]"))){ setPage(x.dataset.go); return; }
     if((x=e.target.closest("[data-ctxf]"))){ const c=x.dataset.ctxf; if(ctxFilter.has(c)&&ctxFilter.size>1) ctxFilter.delete(c); else ctxFilter.add(c); RENDER.agenda(); return; }
-    if((x=e.target.closest("[data-wstato]"))){ const k=x.dataset.wstato; wf.stato.has(k)?wf.stato.delete(k):wf.stato.add(k); RENDER.work(); return; }
-    if((x=e.target.closest("[data-wscad]"))){ wf.scad=x.dataset.wscad; RENDER.work(); return; }
-    if((x=e.target.closest("[data-wpiano]"))){ wf.piano=x.dataset.wpiano; RENDER.work(); return; }
-    if((x=e.target.closest("[data-wpri]"))){ const n=Number(x.dataset.wpri); wf.pri.has(n)?wf.pri.delete(n):wf.pri.add(n); RENDER.work(); return; }
+    if((x=e.target.closest("[data-wpreset]"))){ wfSetPreset(x.dataset.wpreset); return; }
+    if((x=e.target.closest("#wfToggle"))){ wfOpen=!wfOpen; RENDER.work(); return; }
+    if((x=e.target.closest("[data-wstato]"))){ const k=x.dataset.wstato; wf.stato.has(k)?wf.stato.delete(k):wf.stato.add(k); wf.preset=null; RENDER.work(); return; }
+    if((x=e.target.closest("[data-wscad]"))){ wf.scad=x.dataset.wscad; wf.preset=null; RENDER.work(); return; }
+    if((x=e.target.closest("[data-wpiano]"))){ wf.piano=x.dataset.wpiano; wf.preset=null; RENDER.work(); return; }
+    if((x=e.target.closest("[data-wpri]"))){ const n=Number(x.dataset.wpri); wf.pri.has(n)?wf.pri.delete(n):wf.pri.add(n); wf.preset=null; RENDER.work(); return; }
     if((x=e.target.closest("[data-wcat]"))){ const id=x.dataset.wcat; wf.cats.has(id)?wf.cats.delete(id):wf.cats.add(id); RENDER.work(); return; }
     if((x=e.target.closest("[data-addcat]"))){ openTask(null,{categoryId:x.dataset.addcat}); return; }
     if((x=e.target.closest("[data-sayf]"))){ sayFilter=x.dataset.sayf; RENDER.say(); return; }
@@ -3098,6 +3162,7 @@ function bindDelegated(){
       case "todayAddTask": openTask(null,{plannedFor:today()}); break;
       case "todayAddAppt": openEvent(null,{date:today(),context:"work"}); break;
       case "sayAdd": openNote(null); break;
+      case "sayPeople": addQuickPerson(); break;
       case "studyAddExam": openExam(null); break;
       case "studyAddBlock": openEvent(null,{date:selDate,context:"study",start:"18:00",end:"19:30"}); break;
       case "sportAddWorkout": openWorkout(null); break;
@@ -3129,7 +3194,7 @@ function bindDelegated(){
   // input / change delegati
   document.addEventListener("input",e=>{ const t=e.target;
     if(t.id==="workSearch"){ wf.q=t.value; renderWorkGrid(); }
-    else if(t.id==="saySearch"){ renderSayGrid(); }
+    else if(t.id==="saySearch"){ saySearch=t.value; renderSayGrid(); }
     else if(t.id==="quickTodayTitle"){ /* noop */ } });
   document.addEventListener("change",e=>{ const t=e.target;
     if(t.id==="setName"){ state.profile.nome=t.value.slice(0,60); touchMeta("profile"); save(); }
