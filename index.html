@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
-<title>Agenda Unificata</title>
+<title>MCVC HUB</title>
 <meta name="description" content="Un'unica agenda intelligente: lavoro, vita personale, studio e sport in un solo sistema, con Modalità Generale e Modalità Lavoro." />
 <meta name="theme-color" content="#0B315D" />
 <meta name="color-scheme" content="light" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Agenda" />
+<meta name="apple-mobile-web-app-title" content="MCVC HUB" />
 <meta name="format-detection" content="telephone=no" />
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -628,7 +628,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 <div class="auth" id="auth">
   <div class="auth-card">
     <img id="authLogo" alt="" style="width:56px;height:56px;border-radius:15px;display:block;margin:0 auto 14px;box-shadow:var(--sh-2)" />
-    <h2>Agenda Unificata</h2>
+    <h2>MCVC HUB</h2>
     <p class="a-sub">Un solo account su telefono, tablet e computer: gli stessi dati ovunque.</p>
     <div class="auth-tabs">
       <button id="tabLogin" class="on">Accedi</button>
@@ -648,7 +648,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 <div class="scrim" id="scrim"></div>
 <div class="shell">
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><img class="logo-slot" id="sideLogo" alt="MCVC" /><span class="brand-name">Agenda<small id="brandMode">Generale</small></span></div>
+    <div class="brand"><img class="logo-slot" id="sideLogo" alt="MCVC" /><span class="brand-name">MCVC HUB<small id="brandMode">Generale</small></span></div>
 
     <div class="side-ws">Workspace</div>
     <div class="mode-switch" id="modeSwitch">
@@ -2642,8 +2642,8 @@ async function doLogout(){ if(cloud.client) try{ await cloud.client.auth.signOut
    ============================================================ */
 function download(name,text,type){ const blob=new Blob([text],{type:type||"application/json"}); const url=URL.createObjectURL(blob);
   const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000); }
-function exportJson(){ const out={...state, _backup:{app:"Agenda Unificata",schemaVersion:SCHEMA_VERSION,exportedAt:now()}};
-  download(`agenda-unificata-${today()}.json`, JSON.stringify(out,null,2)); toast("Backup esportato","ok"); }
+function exportJson(){ const out={...state, _backup:{app:"MCVC HUB",schemaVersion:SCHEMA_VERSION,exportedAt:now()}};
+  download(`mcvc-hub-${today()}.json`, JSON.stringify(out,null,2)); toast("Backup esportato","ok"); }
 function importJson(file){ const rd=new FileReader();
   rd.onload=()=>{ try{ const raw=JSON.parse(rd.result); mergeImported(raw); save(); allocaAll(); renderAll(); toast("Backup importato e fuso","ok"); }
     catch(e){ console.error(e); toast("File non valido","err"); } };
@@ -2663,14 +2663,14 @@ function mergeImported(raw){
 }
 function icsStamp(iso,hm){ const [Y,M,D]=iso.split("-"); const [h,m]=hm.split(":"); return `${Y}${M}${D}T${pad(h)}${pad(m)}00`; }
 function exportIcs(){
-  const horizon=addDaysIso(today(),180); let out="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Agenda Unificata//IT\r\nCALSCALE:GREGORIAN\r\n";
+  const horizon=addDaysIso(today(),180); let out="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//MCVC HUB//IT\r\nCALSCALE:GREGORIAN\r\n";
   live("events").filter(e=>e.date>=addDaysIso(today(),-30)&&e.date<=horizon).forEach(e=>{
     out+="BEGIN:VEVENT\r\n"+`UID:${e.id}@agenda-unificata\r\n`+`DTSTART;TZID=Europe/Rome:${icsStamp(e.date,e.start)}\r\n`+`DTEND;TZID=Europe/Rome:${icsStamp(e.date,e.end)}\r\n`+`SUMMARY:${(CONTEXTS[e.context]||{}).label||""} · ${e.title.replace(/[\r\n,;]/g," ")}\r\n`+"END:VEVENT\r\n";
   });
   // calcio ricorrente sui prossimi 180 giorni
   for(let i=-2;i<180;i++){ const iso=addDaysIso(today(),i); footballBlocksForDay(iso).forEach(b=>{
     out+="BEGIN:VEVENT\r\n"+`UID:${b.id}_${iso}@agenda-unificata\r\n`+`DTSTART;TZID=Europe/Rome:${icsStamp(iso,b.start)}\r\n`+`DTEND;TZID=Europe/Rome:${icsStamp(iso,b.end)}\r\n`+`SUMMARY:Calcio · ${b.title.replace(/[\r\n,;]/g," ")}\r\n`+"END:VEVENT\r\n"; }); }
-  out+="END:VCALENDAR\r\n"; download(`agenda-unificata-${today()}.ics`,out,"text/calendar"); toast("Calendario esportato","ok");
+  out+="END:VCALENDAR\r\n"; download(`mcvc-hub-${today()}.ics`,out,"text/calendar"); toast("Calendario esportato","ok");
 }
 function resetLocal(){ if(!confirm("Azzerare l'archivio locale di questo dispositivo? I dati sul cloud e i vecchi archivi non vengono toccati.")) return;
   Store.del(LS_KEY); Store.del(LS_LEGACY_MIGR); state=normalize(defaultState()); state.categories=seedCategories(); save(); allocaAll(); renderAll(); toast("Archivio locale azzerato"); }
