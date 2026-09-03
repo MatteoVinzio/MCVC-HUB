@@ -269,6 +269,13 @@ button.stat:active{transform:translateY(1px);}
 .stat.hero .stat-ico{background:rgba(255,255,255,.14);color:#fff;}
 .stat.hero .stat-cta{color:#fff;}
 body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a6b39);}
+/* Banner "Impegni di oggi": sottile e lungo (full-width) */
+.stat.wide{flex-direction:row;align-items:center;gap:14px;min-height:auto;padding:15px 20px;margin-bottom:14px;width:100%;}
+.stat.wide .stat-ico{width:40px;height:40px;flex:none;}
+.stat.wide .wide-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.stat.wide .wide-val{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1;flex:none;}
+.stat.wide .wide-arrow{width:18px;height:18px;flex:none;opacity:.7;}
+.stats-2{grid-template-columns:repeat(2,1fr);}
 
 /* Lists / rows */
 .row{display:flex;align-items:flex-start;gap:11px;padding:11px 12px;border-radius:var(--r-sm);transition:background .14s;}
@@ -402,36 +409,39 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .wkchip{font-size:10.5px;font-weight:700;padding:4px 6px;border-radius:6px;margin-bottom:4px;cursor:pointer;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid;}
 
-/* ---------------- Agenda: vista SETTIMANA a griglia oraria ---------------- */
+/* ---------------- Agenda: vista SETTIMANA a griglia oraria (tutti i 7 giorni) ---------------- */
 :root{--wk-hour:46px;}
-.wkcal{--wk-time:48px;--wk-day:minmax(104px,1fr);position:relative;overflow:auto;max-height:calc(100dvh - 200px);background:#fff;}
-.wkcal-head{display:grid;grid-template-columns:var(--wk-time) repeat(7,var(--wk-day));position:sticky;top:0;z-index:9;background:#fff;border-bottom:1px solid var(--ink-200);}
-.wkcal-corner{border-right:1px solid var(--ink-100);position:sticky;left:0;background:#fff;z-index:2;}
-.wkcal-dh{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 7px;border-right:1px solid var(--ink-100);cursor:pointer;background:none;}
-.wkcal-dh span{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-500);}
-.wkcal-dh b{font-size:16px;color:var(--ink-900);line-height:1;}
+.wkcal{--wk-time:38px;position:relative;overflow-y:auto;overflow-x:hidden;max-height:calc(100dvh - 200px);background:#fff;}
+.wkcal-head{display:grid;grid-template-columns:var(--wk-time) repeat(7,1fr);position:sticky;top:0;z-index:9;background:#fff;border-bottom:1px solid var(--ink-200);}
+.wkcal-corner{border-right:1px solid var(--ink-100);}
+.wkcal-dh{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 1px 7px;border-right:1px solid var(--ink-100);cursor:pointer;background:none;min-width:0;}
+.wkcal-dh span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;color:var(--ink-500);}
+.wkcal-dh b{font-size:15px;color:var(--ink-900);line-height:1;}
 .wkcal-dh:hover{background:var(--blu-50);}
 .wkcal-dh.today span{color:var(--blu-700);}
-.wkcal-dh.today b{color:#fff;background:var(--blu-800);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;margin-top:1px;}
-.wkcal-body{display:grid;grid-template-columns:var(--wk-time) repeat(7,var(--wk-day));position:relative;}
-.wkcal-times{position:sticky;left:0;background:#fff;z-index:4;}
-.wkcal-times .hl{height:var(--wk-hour);font-size:10.5px;font-weight:600;color:var(--ink-400);text-align:right;padding-right:7px;transform:translateY(-6px);}
+.wkcal-dh.today b{color:#fff;background:var(--blu-800);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-top:1px;font-size:13px;}
+.wkcal-body{display:grid;grid-template-columns:var(--wk-time) repeat(7,1fr);position:relative;}
+.wkcal-times{position:relative;}
+.wkcal-times .hl{height:var(--wk-hour);font-size:10px;font-weight:600;color:var(--ink-400);text-align:right;padding-right:5px;transform:translateY(-6px);}
 .wkcal-col{position:relative;border-left:1px solid var(--ink-100);min-width:0;}
 .wkcal-col.today{background:var(--blu-50);}
 .wkcal-col .wslots{position:absolute;inset:0;}
 .wkcal-col .wslot{height:var(--wk-hour);border-bottom:1px dashed var(--ink-100);cursor:pointer;}
 .wkcal-col .wslot:hover{background:var(--blu-100);}
-.wkev{position:absolute;left:2px;right:2px;border-radius:6px;padding:3px 6px;overflow:hidden;cursor:pointer;border-left:3px solid;
-  font-size:11px;line-height:1.2;box-shadow:var(--sh-1);z-index:3;}
+.wkev{position:absolute;left:1.5px;right:1.5px;border-radius:5px;padding:2px 4px;overflow:hidden;cursor:pointer;border-left:3px solid;
+  font-size:10px;line-height:1.14;box-shadow:var(--sh-1);z-index:3;}
 .wkev .wkev-t{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.wkev .wkev-h{font-size:10px;opacity:.85;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wkev .wkev-h{font-size:9px;opacity:.85;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .wkev.busy{background:var(--ink-100)!important;border-color:var(--ink-300)!important;color:var(--ink-500)!important;}
 .wkev.workband{background:rgba(29,90,143,.06);border:1px solid rgba(29,90,143,.12);border-left:3px solid rgba(29,90,143,.3);box-shadow:none;pointer-events:none;color:var(--ctx-work);z-index:0;}
 .wkcal .nowline{z-index:6;}
 @media (max-width:960px){
-  /* Su mobile la griglia scorre in orizzontale: colonne larghe e leggibili. */
-  .wkcal{--wk-time:44px;--wk-day:118px;max-height:calc(100dvh - 230px);-webkit-overflow-scrolling:touch;}
-  .wkcal-dh b{font-size:15px;}
+  .wkcal{--wk-time:30px;max-height:calc(100dvh - 230px);}
+  .wkev{font-size:8px;padding:2px 2px 2px 3px;line-height:1.1;letter-spacing:-.02em;}
+  .wkev .wkev-h{font-size:7.5px;}
+  .wkcal-dh b{font-size:14px;}
+  .wkcal-dh span{font-size:9px;}
+  .wkcal-times .hl{font-size:8.5px;padding-right:2px;}
 }
 
 /* ---------------- Pianifica settimana (planner) ---------------- */
@@ -1528,8 +1538,18 @@ function layoutColumns(items){
   const cols=[]; sorted.forEach(it=>{ let placed=false;
     for(let c=0;c<cols.length;c++){ if(cols[c][cols[c].length-1].e<=it.s){ cols[c].push(it); it._col=c; placed=true; break; } }
     if(!placed){ it._col=cols.length; cols.push([it]); } });
-  const ncol=Math.max(1,cols.length);
-  sorted.forEach(it=>{ it._ncol=ncol; }); return sorted;
+  // La larghezza dipende dal cluster LOCALE di sovrapposizioni, non dall'intera giornata:
+  // così un evento isolato (es. le 7:00) resta a tutta larghezza anche se la sera c'è un incastro.
+  let i=0;
+  while(i<sorted.length){
+    let end=sorted[i].e, k=i+1;
+    while(k<sorted.length && sorted[k].s < end){ end=Math.max(end,sorted[k].e); k++; }
+    const cluster=sorted.slice(i,k);
+    const ncol=Math.max(1,...cluster.map(x=>x._col+1));
+    cluster.forEach(x=>{ x._ncol=ncol; });
+    i=k;
+  }
+  return sorted;
 }
 
 /* ============================================================
@@ -1736,21 +1756,28 @@ RENDER.today = function(){
   const nextDl = openDeadlines[0];
   const urgent = live("tasks").filter(t=>t.status!=="done"&&t.priority>=4).length;
 
-  let stats;
+  let statsBlock;
   if(workFocus){
-    stats = statCard("Piano di oggi",planCount,planCount?"attività da fare":"niente pianificato","i-target",{hero:true,onclick:"go:work"})
+    const stats = statCard("Piano di oggi",planCount,planCount?"attività da fare":"niente pianificato","i-target",{hero:true,onclick:"go:work"})
       + statCard("Appuntamenti lavoro",workEvents.length,"oggi in agenda","i-work",{onclick:"go:agenda"})
       + statCard("Attività urgenti",urgent,"priorità alta o critica","i-flag",{onclick:"go:work"})
       + statCard("Scadenze aperte",openDeadlines.length, nextDl?("prossima "+fmtDayShort(nextDl.deadline)):"nessuna","i-cal",{onclick:"go:work"});
+    statsBlock = `<div class="stats">${stats}</div>`;
   } else {
-    // Quotidiano: niente "Piano di oggi" (è roba di lavoro); focus su vita personale.
+    // Quotidiano: "Impegni di oggi" come banner sottile e lungo; niente "Piano di oggi"
+    // né "Prossima scadenza" (roba di lavoro). Sotto: studio e sport.
     const needH = nextExamsNeed();
     const wkMon=mondayOf(new Date());
     const sportCount=live("events").filter(e=>(e.context==="gym"||e.context==="corsa")&&inThisWeek(e.date,wkMon)).length;
-    stats = statCard("Impegni di oggi",dayEvents.length,"nell'agenda unificata","i-agenda",{hero:true,onclick:"go:agenda"})
-      + statCard("Prossima scadenza",nextDl?fmtDayShort(nextDl.deadline):"—", nextDl?esc(nextDl.title).slice(0,26):"nessuna scadenza","i-cal",{onclick:"go:work"})
-      + statCard("Studio settimana",needH!=null?Math.round(needH)+"h":"—","fabbisogno stimato","i-study",{onclick:"go:study"})
+    const n=dayEvents.length;
+    const banner=`<button class="stat wide hero" data-act="go:agenda">
+      <div class="stat-ico"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg></div>
+      <div class="wide-main"><div class="stat-label">Impegni di oggi</div><div class="stat-sub">${n===0?"nessun impegno":n===1?"un impegno":n+" impegni"} nell'agenda unificata</div></div>
+      <div class="wide-val tnum">${n}</div>
+      <svg class="wide-arrow" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button>`;
+    const two = statCard("Studio settimana",needH!=null?Math.round(needH)+"h":"—","fabbisogno stimato","i-study",{onclick:"go:study"})
       + statCard("Sport settimana",sportCount,"palestra e corsa","i-gym",{onclick:"go:sport"});
+    statsBlock = `${banner}<div class="stats stats-2">${two}</div>`;
   }
 
   let mainCol, sideCol;
@@ -1786,7 +1813,7 @@ RENDER.today = function(){
   p.innerHTML = `
     <div style="margin-bottom:16px"><h2 style="font-size:22px;font-weight:800;letter-spacing:-.02em">${greetNow()}, ${esc(state.profile.nome||"")}</h2>
       <p style="color:var(--ink-500);font-size:13.5px;margin-top:2px;text-transform:capitalize">${fmtDayLong(new Date())}${dayHasClash(iso)?' · <span style="color:#8a5f0b;font-weight:700">possibile sovrapposizione oggi</span>':''}</p></div>
-    <div class="stats">${stats}</div>
+    ${statsBlock}
     <div class="grid-2">
       <div class="stack">${mainCol}</div>
       <div class="stack">${sideCol}</div>
@@ -1997,7 +2024,7 @@ function weekHTML(monday){
       const w=100/b._ncol, leftPct=b._col*w; const title=busy?"Occupato":esc(b.title);
       return `<div class="wkev ${busy?'busy':''}" data-block='${esc(JSON.stringify(b.ref||null))}'
         style="top:${top}px;height:${hh}px;left:calc(${leftPct}% + 2px);width:calc(${w}% - 4px);background:${busy?'var(--ink-100)':hexToRgba(ctxHex[b.context],.13)};border-left-color:${col};color:${busy?'var(--ink-500)':col}">
-        <div class="wkev-t">${(!busy&&clash.has(b.id))?'⚠︎ ':''}${title}</div>${hh>26?`<div class="wkev-h">${b.start}–${b.end}</div>`:''}</div>`; }).join("");
+        <div class="wkev-t">${(!busy&&clash.has(b.id))?'⚠︎ ':''}${title}</div>${hh>30?`<div class="wkev-h">${b.start}</div>`:''}</div>`; }).join("");
     const now=new Date(); const nowLine = isT ? `<div class="nowline" style="top:${clamp(px(now.getHours()*60+now.getMinutes()),0,gridH)}px"></div>` : "";
     cols+=`<div class="wkcal-col ${isT?'today':''}" style="height:${gridH}px"><div class="wslots">${slots}</div>${ev}${nowLine}</div>`;
   }
