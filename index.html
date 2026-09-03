@@ -142,7 +142,8 @@ body.mode-work .mode-switch button.on{background:linear-gradient(160deg,var(--ve
   body.mode-work .topbar-ws button.on{background:var(--verde-600);}
 }
 
-.side-foot{position:relative;z-index:1;margin-top:auto;display:flex;flex-direction:column;gap:3px;padding-top:12px;}
+.side-foot{position:relative;z-index:1;margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:1px solid rgba(255,255,255,.09);margin-top:auto;}
+.side-foot .nav-altro{margin-bottom:2px;}
 .mini{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--r-sm);
   color:rgba(255,255,255,.62);font-size:13px;font-weight:500;text-align:left;width:100%;min-height:40px;}
 .mini svg{width:16px;height:16px;flex:none;}
@@ -294,6 +295,32 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .catcard-count{font-size:11.5px;font-weight:700;color:var(--ink-400);}
 .catcard-body{padding:6px 8px;display:flex;flex-direction:column;}
 
+/* Righe attività ricche (pagina Categorie) */
+.task-item{border-radius:var(--r-sm);}
+.task-item+.task-item{border-top:1px solid var(--ink-100);}
+.task-item.is-done{opacity:.6;}
+.task-line{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;}
+.task-main{flex:1;min-width:0;cursor:pointer;}
+.task-actions{display:flex;align-items:center;gap:2px;flex:none;}
+.iact{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;background:transparent;color:var(--ink-400);border:0;cursor:pointer;transition:all .14s;}
+.iact svg{width:18px;height:18px;}
+.iact:hover{background:var(--ink-50);color:var(--ink-700);}
+.iact.on{background:var(--verde-100);color:var(--verde-700);}
+.iact.danger:hover{background:var(--rosso-100);color:var(--rosso-700);}
+.tag-plan{background:var(--verde-100);color:var(--verde-700);}
+.tag-late{background:var(--rosso-100);color:var(--rosso-700);}
+.task-subs{display:flex;flex-direction:column;gap:2px;padding:0 6px 6px 44px;}
+.subrow{display:flex;align-items:center;gap:9px;padding:6px 6px;border-radius:8px;background:transparent;border:0;cursor:pointer;text-align:left;width:100%;color:var(--ink-700);font:inherit;}
+.subrow:hover{background:var(--ink-50);}
+.subcheck{width:19px;height:19px;border-radius:6px;flex:none;box-shadow:inset 0 0 0 2px var(--ink-300);background:#fff;display:grid;place-items:center;}
+.subcheck svg{width:12px;height:12px;opacity:0;color:#fff;}
+.subrow.done .subcheck{background:var(--verde-600);box-shadow:inset 0 0 0 2px var(--verde-600);}
+.subrow.done .subcheck svg{opacity:1;}
+.subtxt{font-size:12.5px;line-height:1.35;}
+.subrow.done .subtxt{text-decoration:line-through;color:var(--ink-400);}
+.head-actions{display:flex;align-items:center;gap:6px;flex:none;}
+@media (max-width:600px){ .iact{width:40px;height:40px;} .task-actions{gap:0;} }
+
 /* ---------------- Agenda timeline ---------------- */
 .ag-layout{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start;}
 .ag-main{background:#fff;border-radius:var(--r-lg);box-shadow:var(--sh-2);overflow:hidden;}
@@ -329,7 +356,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .ev.proposal{border-style:dashed;border-width:1.5px 1.5px 1.5px 3px;box-shadow:none;opacity:.92;}
 .ev.derived{opacity:.9;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px);cursor:default;}
 /* Fascia orario di lavoro: solo sfondo leggero, non un evento in conflitto */
-.ev.workband{background:rgba(29,90,143,.06);border:1px solid rgba(29,90,143,.13);border-left:3px solid rgba(29,90,143,.34);box-shadow:none;cursor:default;color:var(--ctx-work);background-image:none;opacity:1;}
+.ev.workband{background:rgba(29,90,143,.06);border:1px solid rgba(29,90,143,.13);border-left:3px solid rgba(29,90,143,.34);box-shadow:none;cursor:default;color:var(--ctx-work);background-image:none;opacity:1;pointer-events:none;}
 .ev.workband .workband-label{position:sticky;top:2px;font-size:10.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;opacity:.72;white-space:nowrap;}
 .ev-badge-clash{position:absolute;top:3px;right:4px;width:15px;height:15px;border-radius:50%;background:var(--ambra-600);color:#fff;display:grid;place-items:center;font-size:9px;font-weight:800;box-shadow:0 0 0 2px #fff;}
 .nowline{position:absolute;left:0;right:0;height:2px;background:var(--rosso-600);z-index:6;pointer-events:none;}
@@ -540,11 +567,11 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 }
 @media (max-width:600px){
   .topbar p{display:none;}
-  .topbar h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw;}
-  /* Topbar mobile essenziale: switch compatto + "+". Niente flag doppio, niente ricerca (è nel menu). */
-  #searchTop{display:none!important;}
-  .top-actions{gap:7px;flex-wrap:nowrap;}
-  .topbar{gap:8px;}
+  .topbar h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38vw;}
+  /* Topbar mobile essenziale: switch + ricerca (icona) + "+" (icona). Niente flag doppio. */
+  .top-actions{gap:6px;flex-wrap:nowrap;}
+  .topbar{gap:8px;padding-left:12px;padding-right:12px;}
+  .topbar-ws button{padding:6px 10px;font-size:11px;}
 }
 @media (max-width:400px){
   .page{padding:14px 11px calc(94px + var(--safe-b));}
@@ -661,22 +688,19 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
       <button class="nav-btn active" data-page="today"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-today"/></svg><span>Oggi</span></button>
       <button class="nav-btn" data-page="planner" data-personal="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-week"/></svg><span>Settimana</span></button>
       <button class="nav-btn" data-page="agenda"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg><span>Agenda</span></button>
-      <button class="nav-btn" data-page="work" data-work="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg><span>Lavoro</span><span class="nav-badge" id="navBadgePlan" hidden>0</span></button>
+      <button class="nav-btn" data-page="work" data-work="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cats"/></svg><span>Categorie</span><span class="nav-badge" id="navBadgePlan" hidden>0</span></button>
       <button class="nav-btn" data-page="say" data-work="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-say"/></svg><span>Da dire</span></button>
       <button class="nav-btn" data-page="study" data-personal="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-study"/></svg><span>Studio</span></button>
       <button class="nav-btn" data-page="sport" data-personal="1"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-gym"/></svg><span>Sport</span></button>
       <button class="nav-btn" data-page="stats"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-stats"/></svg><span>Statistiche</span></button>
-      <button class="nav-btn" data-page="settings"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-gear"/></svg><span>Altro</span></button>
     </nav>
 
     <div class="side-foot">
+      <button class="nav-btn nav-altro" data-page="settings"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-gear"/></svg><span>Altro</span></button>
       <button class="cloud-pill" id="cloudBtn" title="Stato sincronizzazione">
         <span class="cloud-dot off" id="cloudDot"></span>
         <span class="cloud-txt"><b id="cloudTitle">Solo locale</b><small id="cloudSub">Tocca per accedere</small></span>
       </button>
-      <button class="mini" id="searchBtn"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search"/></svg><span>Cerca ovunque</span></button>
-      <button class="mini" id="exportBtn"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-dl"/></svg><span>Esporta backup</span></button>
-      <button class="mini" id="importBtn"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-ul"/></svg><span>Importa backup</span></button>
       <input type="file" id="importFile" accept="application/json,.json" hidden />
       <button class="mini danger" id="logoutBtn" hidden><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-logout"/></svg><span>Esci dall'account</span></button>
     </div>
@@ -720,7 +744,7 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
   <button class="tab active" data-page="today"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-today"/></svg><span>Oggi</span></button>
   <button class="tab" id="tabSecond" data-page="planner"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-week"/></svg><span>Settimana</span></button>
   <button class="tab tab-fab" id="fabBtn" aria-label="Aggiungi"><span class="fab-in"><svg fill="none" stroke="currentColor" stroke-width="2.4"><use href="#i-plus"/></svg></span></button>
-  <button class="tab" id="tabFourth" data-page="work"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg><span>Lavoro</span><span class="tb" id="tabBadgePlan" hidden>0</span></button>
+  <button class="tab" id="tabFourth" data-page="work"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cats"/></svg><span>Categorie</span><span class="tb" id="tabBadgePlan" hidden>0</span></button>
   <button class="tab" data-page="more" id="tabMore"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-more"/></svg><span>Altro</span></button>
 </nav>
 
@@ -1459,7 +1483,7 @@ const PAGE_META = {
   today:   {t:"Oggi",        s:"La tua giornata in un colpo d'occhio.",   ws:"La tua giornata di lavoro."},
   planner: {t:"Pianifica settimana", s:"Distribuisci palestra, corsa e studio intorno agli impegni fissi."},
   agenda:  {t:"Agenda",      s:"Un solo calendario: lavoro e vita personale insieme.", ws:"Agenda di lavoro (gli impegni personali restano come blocchi occupato)."},
-  work:    {t:"Lavoro",      s:"Attività, categorie e scadenze."},
+  work:    {t:"Categorie",   s:"Le tue attività di lavoro, raggruppate per categoria."},
   say:     {t:"Da dire",     s:"Cosa dire o chiedere, e a chi."},
   study:   {t:"Studio",      s:"Esami, avanzamento e pianificazione."},
   sport:   {t:"Sport",       s:"Palestra, corsa e calcio."},
@@ -1498,7 +1522,7 @@ function syncTabbar(){
   const t2=$("#tabSecond"), t4=$("#tabFourth");
   if(MODE==="work"){
     t2.dataset.page="agenda"; t2.querySelector("span").textContent="Agenda"; t2.querySelector("use").setAttribute("href","#i-agenda");
-    t4.dataset.page="work";   t4.querySelector("span").textContent="Lavoro"; t4.querySelector("use").setAttribute("href","#i-work");
+    t4.dataset.page="work";   t4.querySelector("span").textContent="Categorie"; t4.querySelector("use").setAttribute("href","#i-cats");
   } else {
     t2.dataset.page="planner"; t2.querySelector("span").textContent="Settimana"; t2.querySelector("use").setAttribute("href","#i-week");
     t4.dataset.page="agenda";  t4.querySelector("span").textContent="Agenda";    t4.querySelector("use").setAttribute("href","#i-agenda");
@@ -1623,13 +1647,18 @@ RENDER.today = function(){
   let mainCol, sideCol;
   if(workFocus){
     // Priorità visiva: PRIMA "Da fare oggi", poi l'agenda.
+    const carry=carryTasks();
     mainCol = `
       <div class="panel primary"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg> Da fare oggi <span class="count" id="cntTasks">0</span></h2>
-        <button class="btn btn-sm btn-ghost" data-act="go:work">Tutte <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
-        <div class="panel-body" id="todayTasks"></div></div>`;
+        <div class="head-actions"><button class="btn btn-sm btn-verde" id="todayAddTask"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Attività</button>
+        <button class="btn btn-sm btn-ghost" data-act="go:work">Tutte <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div></div>
+        <div class="panel-body" id="todayTasks"></div></div>
+      ${carry.length?`<div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-warn"/></svg> Non concluse da ieri <span class="count">${carry.length}</span></h2></div>
+        <div class="panel-body" id="todayCarry"></div></div>`:""}`;
     sideCol = `
       <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg> Agenda di oggi <span class="count">${workEvents.length}</span></h2>
-        <button class="btn btn-sm btn-ghost" data-act="go:agenda">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
+        <div class="head-actions"><button class="btn btn-sm btn-verde" id="todayAddAppt"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Appuntamento</button>
+        <button class="btn btn-sm btn-ghost" data-act="go:agenda">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div></div>
         <div class="panel-body">${timelineList(iso,{workFocus:true})}</div></div>
       ${personalConstraintsToday(iso)}
       <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cal"/></svg> Scadenze</h2></div><div class="panel-body" id="todayDeadlines"></div></div>
@@ -1640,12 +1669,6 @@ RENDER.today = function(){
         <button class="btn btn-sm btn-ghost" data-act="go:agenda">Agenda <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div>
         <div class="panel-body">${timelineList(iso,{workFocus:false})}</div></div>`;
     sideCol = `
-      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-plus"/></svg> Inserimento rapido</h2></div>
-        <div class="panel-body"><form class="quick" id="quickTodayForm" style="display:flex;gap:8px" autocomplete="off">
-          <input class="field" id="quickTodayTitle" placeholder="Aggiungi al volo un'attività…" maxlength="180" required />
-          <button class="btn btn-verde" type="submit"><svg fill="none" stroke="currentColor" stroke-width="2.4"><use href="#i-plus"/></svg></button></form>
-          <div class="help">Va tra le attività di lavoro, priorità normale.</div></div></div>
-      <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-work"/></svg> Lavoro oggi</h2><button class="btn btn-sm btn-ghost" data-act="go:work">Apri <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div><div class="panel-body" id="todayWork"></div></div>
       <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg> Prossimi impegni</h2></div><div class="panel-body" id="todayUpcoming"></div></div>
       <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-cal"/></svg> Prossime scadenze</h2></div><div class="panel-body" id="todayDeadlines"></div></div>`;
   }
@@ -1662,13 +1685,12 @@ RENDER.today = function(){
   // riempimenti dinamici
   if(workFocus){
     const tt=$("#todayTasks"); const list=live("tasks").filter(t=>t.status!=="done"&&(t.plannedFor===iso||t.confirmedFor===iso)).sort(sortTasks);
-    tt.innerHTML = list.length?list.map(taskRow).join(""):emptyBox("Niente pianificato per oggi — pianifica dalla sezione Lavoro","i-target");
+    tt.innerHTML = list.length?list.map(taskRow).join(""):emptyBox("Niente pianificato per oggi — aggiungi un'attività o pianifica dalle Categorie","i-target");
     const cnt=$("#cntTasks"); if(cnt) cnt.textContent=list.length;
+    const cc=$("#todayCarry"); if(cc) cc.innerHTML = carryTasks().map(carryRow).join("");
     const sy=$("#todaySay"); const notes=live("notes").filter(n=>!n.done).sort((a,b)=>b.urgency-a.urgency).slice(0,5);
     sy.innerHTML = notes.length?notes.map(noteRow).join(""):emptyBox("Nessun punto in sospeso","i-say");
   } else {
-    const tw=$("#todayWork"); const wl=workTodayList();
-    tw.innerHTML = wl.length?wl.map(taskRow).join(""):emptyBox("Niente di urgente o pianificato oggi","i-work");
     const up=$("#todayUpcoming"); const ev=upcomingEvents(iso,7,null);
     up.innerHTML = ev.length?ev.map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div style="width:78px;flex:none;font-weight:800;font-size:11px;color:var(--ink-500)" class="tnum">${e.date===iso?"oggi":fmtDayShort(e.date)}<br>${e.start}–${e.end}</div><div class="row-main"><div class="row-title">${esc(e.title)}</div><div class="row-meta">${ctxTag(e.context)}</div></div></div>`).join(""):emptyBox("Nessun impegno nei prossimi giorni","i-agenda");
   }
@@ -1700,6 +1722,67 @@ function taskRow(t){
       ${t.deadline?`<span class="tag tag-cat">scad. ${fmtDayShort(t.deadline)}</span>`:""}
       ${subs.length?`<span class="tag tag-cat">${sd}/${subs.length}</span>`:""}</div></div></div>`;
 }
+
+/* Riga attività "ricca" per la pagina Categorie: azioni inline distinte
+   (piano di oggi · completa · sotto-attività · modifica · elimina). */
+function catTaskRow(t){
+  const iso=today();
+  const done=t.status==="done";
+  const planned=(t.plannedFor===iso||t.confirmedFor===iso);
+  const late=t.deadline && t.deadline<iso && !done;
+  const subs=(t.subtasks||[]); const sd=subs.filter(x=>x.done).length;
+  return `<div class="task-item ${done?'is-done':''}">
+    <div class="task-line">
+      <button class="check ${done?'done':''}" data-toggle="${t.id}" title="${done?'Segna da fare':'Completa'}" aria-label="Completa"><svg fill="none" stroke="currentColor" stroke-width="3"><use href="#i-check"/></svg></button>
+      <div class="task-main" data-task="${t.id}">
+        <div class="row-title ${done?'done':''}">${esc(t.title)}</div>
+        <div class="row-meta">
+          <span class="tag" style="background:${PRI[t.priority].color}1a;color:${PRI[t.priority].color}">P${t.priority}</span>
+          ${t.status==="doing"?`<span class="tag tag-cat">in corso</span>`:""}
+          ${t.deadline?`<span class="tag ${late?'tag-late':'tag-cat'}">scad. ${fmtDayShort(t.deadline)}</span>`:""}
+          ${planned?`<span class="tag tag-plan">Piano di oggi</span>`:""}
+          ${subs.length?`<span class="tag tag-cat">${sd}/${subs.length}</span>`:""}
+        </div>
+      </div>
+      <div class="task-actions">
+        <button class="iact ${planned?'on':''}" data-plan="${t.id}" title="${planned?'Togli dal piano di oggi':'Aggiungi al piano di oggi'}" aria-label="Piano di oggi"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg></button>
+        <button class="iact" data-taskedit="${t.id}" title="Modifica" aria-label="Modifica"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-edit"/></svg></button>
+        <button class="iact danger" data-taskdel="${t.id}" title="Elimina" aria-label="Elimina"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-trash"/></svg></button>
+      </div>
+    </div>
+    ${subs.length?`<div class="task-subs">${subs.map(s=>`<button class="subrow ${s.done?'done':''}" data-subtoggle="${t.id}|${s.id}" aria-label="${esc(s.text)}"><span class="subcheck"><svg fill="none" stroke="currentColor" stroke-width="3"><use href="#i-check"/></svg></span><span class="subtxt">${esc(s.text)}</span></button>`).join("")}</div>`:""}
+  </div>`;
+}
+
+/* Attività pianificate in passato e non concluse: NON spariscono, si ripianificano a oggi. */
+function carryTasks(){ const iso=today();
+  return live("tasks").filter(t=>t.status!=="done"
+      && ((t.plannedFor&&t.plannedFor<iso)||(t.confirmedFor&&t.confirmedFor<iso))
+      && !(t.plannedFor===iso||t.confirmedFor===iso))
+    .sort(sortTasks); }
+function carryRow(t){
+  const from=t.plannedFor||t.confirmedFor||"";
+  return `<div class="task-line">
+    <div class="task-main" data-task="${t.id}" style="cursor:pointer">
+      <div class="row-title">${esc(t.title)}</div>
+      <div class="row-meta"><span class="tag tag-cat"><span class="dot" style="background:${catColor(t.categoryId)}"></span>${esc(catName(t.categoryId))}</span>
+      ${from?`<span class="tag" style="background:var(--ambra-100);color:var(--ambra-600)">da ${fmtDayShort(from)}</span>`:""}</div>
+    </div>
+    <div class="task-actions"><button class="btn btn-sm btn-light" data-plan="${t.id}" title="Sposta a oggi"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg> Oggi</button></div>
+  </div>`;
+}
+/* Piano di oggi: distinto dal completamento. Imposta/toglie plannedFor=oggi senza duplicati. */
+function togglePlanToday(id){ const t=taskById(id); if(!t) return; const iso=today();
+  const on=(t.plannedFor===iso||t.confirmedFor===iso);
+  if(on){ if(t.plannedFor===iso) t.plannedFor=""; if(t.confirmedFor===iso) t.confirmedFor=""; }
+  else { t.plannedFor=iso; }
+  t.updatedAt=now(); save(); renderAll(); }
+function toggleSubtask(taskId,subId){ const t=taskById(taskId); if(!t) return;
+  const s=(t.subtasks||[]).find(x=>x.id===subId); if(!s) return;
+  s.done=!s.done; t.updatedAt=now(); save(); renderAll(); }
+function delTaskConfirm(id){ const t=taskById(id); if(!t) return;
+  if(!confirm(`Eliminare l'attività «${t.title}»? L'operazione non è reversibile.`)) return;
+  t.deleted=true; t.updatedAt=now(); save(); renderAll(); toast("Attività eliminata"); }
 
 /* ============================================================
    PAGINA AGENDA — vista giorno / settimana (agenda UNICA)
@@ -2019,7 +2102,7 @@ function renderWorkGrid(){
     if(!ct.length && (workFilter!=="all"||workSearch)) return;
     html+=`<div class="catcard"><div class="catcard-head"><span class="catcard-dot" style="background:${c.color}"></span>
       <span class="catcard-name">${esc(c.name)}</span><span class="catcard-count">${ct.length}</span></div>
-      <div class="catcard-body">${ct.length?ct.map(taskRow).join(""):`<div class="help" style="padding:10px">Nessuna attività</div>`}</div></div>`;
+      <div class="catcard-body">${ct.length?ct.map(catTaskRow).join(""):`<div class="help" style="padding:10px">Nessuna attività</div>`}</div></div>`;
   });
   grid.innerHTML = html || emptyBox("Nessuna attività trovata","i-work");
 };
@@ -2346,11 +2429,11 @@ function delEvent(){ const id=$("#evId").value; const rec=state.events.find(x=>x
   closeModal("eventModal"); save(); renderAll(); toast("Evento eliminato"); }
 
 /* ---------------- ATTIVITÀ (lavoro) ---------------- */
-function openTask(t){
+function openTask(t, preset){
   $("#taskModalTitle").textContent=t?"Modifica attività":"Nuova attività";
   $("#taskId").value=t?t.id:""; $("#taskTitle").value=t?t.title:"";
-  fillCatSelect($("#taskCat"), t?t.categoryId:(live("categories")[0]||{}).id);
-  $("#taskPri").value=t?t.priority:3; $("#taskDue").value=t?t.deadline:""; $("#taskPlan").value=t?t.plannedFor:"";
+  fillCatSelect($("#taskCat"), t?t.categoryId:(preset&&preset.categoryId)||(live("categories")[0]||{}).id);
+  $("#taskPri").value=t?t.priority:3; $("#taskDue").value=t?t.deadline:""; $("#taskPlan").value=t?t.plannedFor:((preset&&preset.plannedFor)||"");
   $("#taskStatus").value=t?t.status:"todo"; $("#taskDesc").value=t?t.description:"";
   $("#taskSubs").value=t?(t.subtasks||[]).map(s=>s.text).join("\n"):"";
   $("#delTaskBtn").hidden=!t; openModal("taskModal"); setTimeout(()=>$("#taskTitle").focus(),80);
@@ -2713,9 +2796,8 @@ function bindStatic(){
   // burger / scrim
   $("#burger").addEventListener("click",openSidebar); $("#scrim").addEventListener("click",()=>{ closeSidebar(); closeFab(); });
   // topbar
-  $("#searchTop").addEventListener("click",openSearch); $("#searchBtn").addEventListener("click",openSearch);
+  $("#searchTop").addEventListener("click",openSearch);
   $("#quickAddTop").addEventListener("click",()=>quickAdd("event"));
-  $("#exportBtn").addEventListener("click",exportJson); $("#importBtn").addEventListener("click",()=>$("#importFile").click());
   $("#importFile").addEventListener("change",e=>{ if(e.target.files[0]) importJson(e.target.files[0]); e.target.value=""; });
   $("#logoutBtn").addEventListener("click",doLogout); $("#cloudBtn").addEventListener("click",()=>{ if(cloud.user) setPage("settings"); else showAuth(true); });
   // FAB
@@ -2753,6 +2835,10 @@ function bindDelegated(){
   document.addEventListener("click",e=>{
     let x;
     if((x=e.target.closest("[data-toggle]"))){ e.stopPropagation(); toggleTask(x.dataset.toggle); return; }
+    if((x=e.target.closest("[data-plan]"))){ e.stopPropagation(); togglePlanToday(x.dataset.plan); return; }
+    if((x=e.target.closest("[data-subtoggle]"))){ e.stopPropagation(); const [tid,sid]=x.dataset.subtoggle.split("|"); toggleSubtask(tid,sid); return; }
+    if((x=e.target.closest("[data-taskedit]"))){ e.stopPropagation(); openTask(taskById(x.dataset.taskedit)); return; }
+    if((x=e.target.closest("[data-taskdel]"))){ e.stopPropagation(); delTaskConfirm(x.dataset.taskdel); return; }
     if((x=e.target.closest("[data-notetoggle]"))){ e.stopPropagation(); toggleNote(x.dataset.notetoggle); return; }
     if((x=e.target.closest("[data-studydone]"))){ e.stopPropagation(); openStudyLog(x.dataset.studydone); return; }
     if((x=e.target.closest("[data-task]"))){ openTask(taskById(x.dataset.task)); return; }
@@ -2769,7 +2855,14 @@ function bindDelegated(){
     if((x=e.target.closest("[data-cal]"))){ selDate=x.dataset.cal; const d=parseIso(selDate); calMonth=new Date(d.getFullYear(),d.getMonth(),1); agView="day"; RENDER.agenda(); return; }
     if((x=e.target.closest("[data-day]"))&&!e.target.closest("[data-addday]")){ selDate=x.dataset.day; agView="day"; RENDER.agenda(); return; }
     if((x=e.target.closest("[data-addday]"))){ e.stopPropagation(); openEvent(null,{date:x.dataset.addday,context:ctxDefault()}); return; }
-    if((x=e.target.closest("[data-hour]"))){ const h=Number(x.dataset.hour); openEvent(null,{date:selDate,start:pad(h)+":00",end:pad(h+1)+":00",context:ctxDefault()}); return; }
+    if((x=e.target.closest("[data-hour]"))){
+      // Clic diretto sulla fascia: crea subito un appuntamento con orario dedotto dal punto toccato.
+      const baseMin=Math.round(Number(x.dataset.hour)*60);
+      const r=x.getBoundingClientRect();
+      const frac=r.height?clamp((e.clientY-r.top)/r.height,0,0.999):0;
+      let sMin=Math.round((baseMin+frac*60)/15)*15;              // snap a 15 min
+      sMin=clamp(sMin, Math.round(DAY_START*60), Math.round(DAY_END*60)-15);
+      openEvent(null,{date:selDate,start:min2hm(sMin),end:min2hm(sMin+60),context:ctxDefault()}); return; }
     if((x=e.target.closest("[data-catdel]"))){ deleteCategory(x.dataset.catdel); return; }
     if((x=e.target.closest("[data-rmprop]"))){ e.stopPropagation(); removeProposal(x.dataset.rmprop); return; }
     if((x=e.target.closest("[data-planadd]"))){ const [ctx,iso]=x.dataset.planadd.split("|"); if(ctx==="other") openEvent(null,{date:iso,context:"personal"}); else planAdd(ctx,iso); return; }
@@ -2779,6 +2872,8 @@ function bindDelegated(){
     switch(id){
       case "openCats": openCatMgr(); break;
       case "workAddTask": openTask(null); break;
+      case "todayAddTask": openTask(null,{plannedFor:today()}); break;
+      case "todayAddAppt": openEvent(null,{date:today(),context:"work"}); break;
       case "sayAdd": openNote(null); break;
       case "studyAddExam": openExam(null); break;
       case "studyAddBlock": openEvent(null,{date:selDate,context:"study",start:"18:00",end:"19:30"}); break;
