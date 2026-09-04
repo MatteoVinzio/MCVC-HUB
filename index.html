@@ -1029,6 +1029,20 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
   </div>
 </div>
 
+<div class="back" id="peopleModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="m-head"><div><h2>Persone</h2><p>Aggiungi, rinomina, cambia colore o rimuovi.</p></div>
+      <button class="icon-btn" data-close="peopleModal" aria-label="Chiudi"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-close"/></svg></button></div>
+    <div class="m-body"><div id="peopleMgr"></div>
+      <form id="perAddForm" style="display:flex;gap:8px;margin-top:12px">
+        <input class="field" id="perAddName" placeholder="Nuova persona…" maxlength="60" required />
+        <input type="color" id="perAddColor" value="#174B7A" style="width:48px;padding:4px;min-height:44px" />
+        <button class="btn btn-verde" type="submit"><svg fill="none" stroke="currentColor" stroke-width="2.4"><use href="#i-plus"/></svg></button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- ============ GLOBAL SEARCH ============ -->
 <div class="gsearch" id="gsearch">
   <div class="gsearch-box">
@@ -1272,9 +1286,31 @@ function normalize(raw){
     createdAt:c.createdAt||now(), updatedAt:c.updatedAt||c.createdAt||SEED_TIME, deleted:!!c.deleted
   }));
 
+  dedupeFootball(s.football);
+
   s.selectedDate = raw&&raw.selectedDate || today();
   s.updatedAt = raw&&raw.updatedAt || now();
   return s;
+}
+
+/* Collassa i doppioni di calcio nati dal seeding con id diversi su più dispositivi.
+   Deterministico: fra i doppioni "vivi" sopravvive quello con l'id più piccolo,
+   gli altri diventano tombstone (deleted) → PC e telefono convergono uguali,
+   e la fusione CRDT propaga la cancellazione. Idempotente (già collassati = niente). */
+function dedupeFootball(list){
+  if(!Array.isArray(list)) return list;
+  const groups=new Map();
+  list.filter(x=>x&&!x.deleted).forEach(x=>{
+    const sig = x.ricorrente ? `R|${x.tipo}|${x.giorno}` : `D|${x.tipo}|${x.data}|${x.inizio}`;
+    if(!groups.has(sig)) groups.set(sig,[]);
+    groups.get(sig).push(x);
+  });
+  groups.forEach(g=>{
+    if(g.length<2) return;
+    g.sort((a,b)=>String(a.id)<String(b.id)?-1:String(a.id)>String(b.id)?1:0);
+    for(let i=1;i<g.length;i++){ g[i].deleted=true; g[i].updatedAt=now(); }
+  });
+  return list;
 }
 function arr(x){ return Array.isArray(x)?x:[]; }
 
@@ -1391,7 +1427,9 @@ function seedDefaults(s){
   s._meta = s._meta || {};
   const hasFootball = (s.football||[]).some(x=>!x.deleted);
   if(!hasFootball){
-    const mk=(giorno,tipo,inizio,conv,dur)=>({ id:uid("fb"), tipo, ricorrente:true, giorno, data:"", casa:true,
+    // ID STABILE e deterministico: se il seeding rigira (altro dispositivo o cache pulita)
+    // ricrea gli STESSI id → la fusione non genera doppioni.
+    const mk=(giorno,tipo,inizio,conv,dur)=>({ id:`fb_seed_${tipo==="partita"?"part":"all"}_${giorno}`, tipo, ricorrente:true, giorno, data:"", casa:true,
       luogo:tipo==="partita"?"":"Campo", convocazione:conv, inizio, durata:dur, viaggio:10, margine:10, dataFine:"",
       createdAt:now(), updatedAt:now(), deleted:false });
     s.football.push(mk(1,"allenamento","20:30","20:15",90));  // Martedì
@@ -2379,6 +2417,27 @@ function renderCatMgr(){
   }).join("");
 }
 
+/* Gestore PERSONE (in Da dire): aggiungi, rinomina, cambia colore, elimina */
+function openPeopleMgr(){ renderPeopleMgr(); openModal("peopleModal"); }
+function renderPeopleMgr(){
+  const box=$("#peopleMgr"); const people=live("people").sort((a,b)=>a.order-b.order);
+  box.innerHTML = people.length ? people.map(pe=>{ const n=live("notes").filter(t=>t.personId===pe.id&&!t.done).length;
+    return `<div class="row" style="align-items:center"><span class="say-avatar" style="width:28px;height:28px;font-size:12px;background:${hexToRgba(pe.color,.16)};color:${pe.color}">${esc((pe.name.trim()[0]||'?').toUpperCase())}</span>
+      <div class="row-main"><input class="field" data-pername="${pe.id}" value="${esc(pe.name)}" style="min-height:36px;padding:6px 10px" maxlength="60" /></div>
+      <span class="catcard-count" style="margin:0 8px">${n}</span>
+      <input type="color" data-percolor="${pe.id}" value="${pe.color}" style="width:36px;height:36px;padding:2px;border:0;background:none" />
+      <button class="icon-btn" data-perdel="${pe.id}" aria-label="Elimina" style="width:34px;height:34px"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-trash"/></svg></button></div>`;
+  }).join("") : `<div class="help" style="padding:8px 4px">Nessuna persona: aggiungine una qui sotto.</div>`;
+}
+function addPerson(e){ e.preventDefault(); const name=$("#perAddName").value.trim(); if(!name) return;
+  state.people.push({id:uid("per"),name:name.slice(0,60),color:$("#perAddColor").value,order:live("people").length,archived:false,createdAt:now(),updatedAt:now(),deleted:false});
+  $("#perAddName").value=""; save(); renderPeopleMgr(); renderAll(); }
+function deletePerson(id){ const pe=(state.people||[]).find(p=>p.id===id); if(!pe) return;
+  const notes=live("notes").filter(n=>n.personId===id); const n=notes.length;
+  if(!confirm(`Eliminare «${pe.name}»${n?` e i suoi ${n} punti`:""}? L'operazione non è reversibile.`)) return;
+  pe.deleted=true; pe.updatedAt=now(); notes.forEach(x=>{ x.deleted=true; x.updatedAt=now(); });
+  save(); renderPeopleMgr(); renderAll(); toast("Persona eliminata"); }
+
 /* ============================================================
    PAGINA DA DIRE — punti per persona (da Agenda Operativa)
    ============================================================ */
@@ -3160,6 +3219,7 @@ function bindStatic(){
   $("#workoutForm").addEventListener("submit",saveWorkout); $("#delWoBtn").addEventListener("click",delWorkout);
   $("#footballForm").addEventListener("submit",saveFootball); $("#delFbBtn").addEventListener("click",delFootball); $("#fbRec").addEventListener("change",toggleFbRec);
   $("#catAddForm").addEventListener("submit",addCategory);
+  $("#perAddForm").addEventListener("submit",addPerson);
   // auth
   $("#tabLogin").addEventListener("click",()=>setAuthMode("login")); $("#tabSignup").addEventListener("click",()=>setAuthMode("signup"));
   $("#authForm").addEventListener("submit",doAuth); $("#authSkip").addEventListener("click",()=>showAuth(false));
@@ -3226,6 +3286,7 @@ function bindDelegated(){
       const day=x.dataset.d||selDate;   // nella vista settimana lo slot porta il proprio giorno
       openEvent(null,{date:day,start:min2hm(sMin),end:min2hm(sMin+60),context:ctxDefault()}); return; }
     if((x=e.target.closest("[data-catdel]"))){ deleteCategory(x.dataset.catdel); return; }
+    if((x=e.target.closest("[data-perdel]"))){ deletePerson(x.dataset.perdel); return; }
     if((x=e.target.closest("[data-rmprop]"))){ e.stopPropagation(); removeProposal(x.dataset.rmprop); return; }
     if((x=e.target.closest("[data-planadd]"))){ const [ctx,iso]=x.dataset.planadd.split("|"); if(ctx==="other") openEvent(null,{date:iso,context:"personal"}); else planAdd(ctx,iso); return; }
     if((x=e.target.closest("[data-gymrot]"))){ toggleGymRot(x.dataset.gymrot); return; }
@@ -3239,7 +3300,7 @@ function bindDelegated(){
       case "todayAddTask": openTask(null,{plannedFor:today()}); break;
       case "todayAddAppt": openEvent(null,{date:today(),context:"work"}); break;
       case "sayAdd": openNote(null); break;
-      case "sayPeople": addQuickPerson(); break;
+      case "sayPeople": openPeopleMgr(); break;
       case "studyAddExam": openExam(null); break;
       case "studyAddBlock": openEvent(null,{date:selDate,context:"study",start:"18:00",end:"19:30"}); break;
       case "sportAddWorkout": openWorkout(null); break;
@@ -3282,6 +3343,8 @@ function bindDelegated(){
     else if(t.dataset.worksmart!=null){ state.settings.lavoro[+t.dataset.worksmart].smart=t.checked; touchMeta("settings"); save(); RENDER.settings(); }
     else if(t.dataset.catname!=null){ const c=catById(t.dataset.catname); if(c){ c.name=t.value.slice(0,60); c.updatedAt=now(); save(); } }
     else if(t.dataset.catcolor!=null){ const c=catById(t.dataset.catcolor); if(c){ c.color=t.value; c.updatedAt=now(); save(); renderAll(); } }
+    else if(t.dataset.pername!=null){ const pe=(state.people||[]).find(p=>p.id===t.dataset.pername); if(pe){ pe.name=t.value.slice(0,60); pe.updatedAt=now(); save(); renderAll(); } }
+    else if(t.dataset.percolor!=null){ const pe=(state.people||[]).find(p=>p.id===t.dataset.percolor); if(pe){ pe.color=t.value; pe.updatedAt=now(); save(); renderPeopleMgr(); renderAll(); } }
     else if(t.dataset.ctxcolor!=null){ const c=t.dataset.ctxcolor; state.settings.ctxColors={...CTX_COLOR_DEF,...(state.settings.ctxColors||{})}; state.settings.ctxColors[c]=t.value; touchMeta("settings"); save(); applyCtxColors(); RENDER.settings(); }
     else if(t.id==="workSort"){ wf.sort=t.value; renderWorkGrid(); }
     else if(t.dataset.set!=null){ const k=t.dataset.set; const v = t.type==="number"?(Number(t.value)||0):t.value; state.settings[k]=v; touchMeta("settings"); save(); } });
