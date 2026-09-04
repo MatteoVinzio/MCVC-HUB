@@ -338,6 +338,23 @@ body.mode-work .stat.hero{background:linear-gradient(155deg,var(--verde-700),#0a
 .say-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:800;flex:none;}
 .say-age{font-size:11.5px;color:var(--ink-500);}
 .tag svg{flex:none;}
+/* Riga "Prossimi impegni" con giorno della settimana */
+.up-when{width:104px;flex:none;display:flex;flex-direction:column;line-height:1.25;}
+.up-when b{font-size:12.5px;font-weight:800;color:var(--ink-800);}
+.up-when span{font-size:11.5px;font-weight:700;color:var(--ink-500);}
+/* Banner "attività riportate a oggi" (Lavoro) */
+.carry-banner{background:#FFF8E9;border:1px solid var(--ambra-100);border-left:4px solid var(--ambra-600);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:18px;box-shadow:var(--sh-1);}
+.carry-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px;}
+.carry-title{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.carry-title b{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:8px;}
+.carry-title b svg{width:17px;height:17px;color:var(--ambra-600);flex:none;}
+.carry-title span{font-size:12.5px;color:var(--ink-500);padding-left:25px;}
+.carry-list{display:flex;flex-direction:column;gap:8px;}
+.carry-item{background:#fff;border-radius:var(--r-md);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--sh-1);flex-wrap:wrap;}
+.carry-main{flex:1;min-width:180px;cursor:pointer;}
+.carry-main .row-title{font-weight:700;}
+.carry-actions{display:flex;gap:6px;flex:none;flex-wrap:wrap;}
+@media (max-width:600px){ .carry-title span{padding-left:0;} .carry-actions{width:100%;} .carry-actions .btn{flex:1;} }
 /* Proiezione studio */
 .study-proj{margin-top:12px;border-top:1px solid var(--ink-100);padding-top:10px;display:flex;flex-direction:column;gap:8px;}
 .proj-row{display:flex;align-items:center;gap:10px;}
@@ -1785,16 +1802,13 @@ RENDER.today = function(){
 
   let mainCol, sideCol;
   if(workFocus){
-    // Priorità visiva: PRIMA "Da fare oggi", poi l'agenda.
-    const carry=carryTasks();
+    // Priorità visiva: PRIMA "Da fare oggi", poi l'agenda. (Il "riportate a oggi" è il banner in alto.)
     mainCol = `
       <div class="panel primary"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg> Da fare oggi <span class="count" id="cntTasks">0</span></h2>
         <div class="head-actions"><button class="btn btn-sm btn-verde" id="todayAddTask"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Attività</button>
         <button class="btn btn-sm btn-ghost" data-act="go:work">Tutte <svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg></button></div></div>
         <div class="panel-body" id="todayTasks"></div></div>
-      ${quickAddWorkPanel()}
-      ${carry.length?`<div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-warn"/></svg> Non concluse da ieri <span class="count">${carry.length}</span></h2></div>
-        <div class="panel-body" id="todayCarry"></div></div>`:""}`;
+      ${quickAddWorkPanel()}`;
     sideCol = `
       <div class="panel"><div class="panel-head"><h2><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-agenda"/></svg> Agenda di oggi <span class="count">${workEvents.length}</span></h2>
         <div class="head-actions"><button class="btn btn-sm btn-verde" id="todayAddAppt"><svg fill="none" stroke="currentColor" stroke-width="2.2"><use href="#i-plus"/></svg> Appuntamento</button>
@@ -1816,6 +1830,7 @@ RENDER.today = function(){
   p.innerHTML = `
     <div style="margin-bottom:16px"><h2 style="font-size:22px;font-weight:800;letter-spacing:-.02em">${greetNow()}, ${esc(state.profile.nome||"")}</h2>
       <p style="color:var(--ink-500);font-size:13.5px;margin-top:2px;text-transform:capitalize">${fmtDayLong(new Date())}${dayHasClash(iso)?' · <span style="color:#8a5f0b;font-weight:700">possibile sovrapposizione oggi</span>':''}</p></div>
+    ${workFocus?carryBanner():""}
     ${statsBlock}
     <div class="grid-2">
       <div class="stack">${mainCol}</div>
@@ -1827,12 +1842,16 @@ RENDER.today = function(){
     const tt=$("#todayTasks"); const list=live("tasks").filter(t=>t.status!=="done"&&(t.plannedFor===iso||t.confirmedFor===iso)).sort(sortTasks);
     tt.innerHTML = list.length?list.map(taskRow).join(""):emptyBox("Niente pianificato per oggi — aggiungi un'attività o pianifica dalle Categorie","i-target");
     const cnt=$("#cntTasks"); if(cnt) cnt.textContent=list.length;
-    const cc=$("#todayCarry"); if(cc) cc.innerHTML = carryTasks().map(carryRow).join("");
     const sy=$("#todaySay"); const notes=live("notes").filter(n=>!n.done).sort((a,b)=>b.urgency-a.urgency).slice(0,5);
     sy.innerHTML = notes.length?notes.map(noteRow).join(""):emptyBox("Nessun punto in sospeso","i-say");
   } else {
-    const up=$("#todayUpcoming"); const ev=upcomingEvents(iso,7,null);
-    up.innerHTML = ev.length?ev.map(e=>`<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer"><div style="width:78px;flex:none;font-weight:800;font-size:11px;color:var(--ink-500)" class="tnum">${e.date===iso?"oggi":fmtDayShort(e.date)}<br>${e.start}–${e.end}</div><div class="row-main"><div class="row-title">${esc(e.title)}</div><div class="row-meta">${ctxTag(e.context)}</div></div></div>`).join(""):emptyBox("Nessun impegno nei prossimi giorni","i-agenda");
+    // "Prossimi impegni": DA DOMANI in poi (gli impegni di oggi sono già in "Oggi in agenda").
+    const up=$("#todayUpcoming"); const ev=upcomingEvents(addDaysIso(iso,1),7,null);
+    up.innerHTML = ev.length?ev.map(e=>{ const d=parseIso(e.date);
+      return `<div class="row" data-block='${esc(JSON.stringify({type:"event",id:e.id}))}' style="cursor:pointer">
+        <div class="up-when"><b>${capitalize(DOW_FULL[dowIdx(d)])} ${d.getDate()}</b><span>${e.start}–${e.end}</span></div>
+        <div class="row-main"><div class="row-title">${esc(e.title)}</div><div class="row-meta">${ctxTag(e.context)}</div></div></div>`;
+    }).join(""):emptyBox("Nessun impegno nei prossimi giorni","i-agenda");
   }
   const dl=$("#todayDeadlines");
   dl.innerHTML = openDeadlines.length?openDeadlines.slice(0,6).map(t=>{ const d=daysTo(t.deadline); const late=d<0;
@@ -1906,17 +1925,41 @@ function carryTasks(){ const iso=today();
       && ((t.plannedFor&&t.plannedFor<iso)||(t.confirmedFor&&t.confirmedFor<iso))
       && !(t.plannedFor===iso||t.confirmedFor===iso))
     .sort(sortTasks); }
-function carryRow(t){
-  const from=t.plannedFor||t.confirmedFor||"";
-  return `<div class="task-line">
-    <div class="task-main" data-task="${t.id}" style="cursor:pointer">
-      <div class="row-title">${esc(t.title)}</div>
-      <div class="row-meta"><span class="tag tag-cat"><span class="dot" style="background:${catColor(t.categoryId)}"></span>${esc(catName(t.categoryId))}</span>
-      ${from?`<span class="tag" style="background:var(--ambra-100);color:var(--ambra-600)">da ${fmtDayShort(from)}</span>`:""}</div>
+/* Banner "attività riportate a oggi": compare in Lavoro quando ci sono attività
+   pianificate in un giorno passato e non chiuse, così organizzi la giornata. */
+function carryBanner(){
+  const carry=carryTasks(); if(!carry.length) return "";
+  const n=carry.length;
+  const rows=carry.map(t=>{ const from=t.plannedFor||t.confirmedFor||""; const rip=(t.postponeCount||0);
+    return `<div class="carry-item">
+      <div class="carry-main" data-task="${t.id}">
+        <div class="row-title">${esc(t.title)}</div>
+        <div class="row-meta">
+          ${rip>0?`<span class="tag" style="background:var(--rosso-100);color:var(--rosso-700)"><svg style="width:11px;height:11px" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-reset"/></svg> ${rip+1}ª volta</span>`:""}
+          <span class="tag tag-cat"><span class="dot" style="background:${catColor(t.categoryId)}"></span>${esc(catName(t.categoryId))}</span>
+          <span class="tag" style="background:${PRI[t.priority].color}1a;color:${PRI[t.priority].color}">P${t.priority}</span>
+          ${from?`<span class="tag" style="background:var(--ambra-100);color:var(--ambra-600)">da ${fmtDayShort(from)}</span>`:""}
+        </div>
+      </div>
+      <div class="carry-actions">
+        <button class="btn btn-sm btn-verde" data-carrykeep="${t.id}"><svg fill="none" stroke="currentColor" stroke-width="2.4"><use href="#i-check"/></svg> Tieni oggi</button>
+        <button class="btn btn-sm btn-light" data-carrytom="${t.id}"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-arrow"/></svg> Domani</button>
+        <button class="btn btn-sm btn-ghost" data-carryrem="${t.id}">Togli</button>
+      </div>
+    </div>`; }).join("");
+  return `<div class="carry-banner">
+    <div class="carry-head">
+      <div class="carry-title"><b><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-reset"/></svg> ${n} ${n===1?"attività riportata":"attività riportate"} a oggi</b>
+        <span>Non le hai chiuse ieri: confermale, spostale o toglile dal piano.</span></div>
+      <button class="btn btn-sm btn-verde" id="carryKeepAll">Tieni tutte</button>
     </div>
-    <div class="task-actions"><button class="btn btn-sm btn-light" data-plan="${t.id}" title="Sposta a oggi"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-target"/></svg> Oggi</button></div>
+    <div class="carry-list">${rows}</div>
   </div>`;
 }
+function carryKeep(id){ const t=taskById(id); if(!t) return; const iso=today(); t.plannedFor=iso; t.confirmedFor=iso; t.updatedAt=now(); save(); renderAll(); }
+function carryTomorrow(id){ const t=taskById(id); if(!t) return; const tom=addDaysIso(today(),1); t.plannedFor=tom; t.confirmedFor=""; t.postponeCount=(t.postponeCount||0)+1; t.updatedAt=now(); save(); renderAll(); toast("Spostata a domani","ok"); }
+function carryRemove(id){ const t=taskById(id); if(!t) return; t.plannedFor=""; t.confirmedFor=""; t.updatedAt=now(); save(); renderAll(); }
+function carryKeepAll(){ const iso=today(); carryTasks().forEach(t=>{ t.plannedFor=iso; t.confirmedFor=iso; t.updatedAt=now(); }); save(); renderAll(); toast("Tenute tutte per oggi","ok"); }
 /* Piano di oggi: distinto dal completamento. Imposta/toglie plannedFor=oggi senza duplicati. */
 function togglePlanToday(id){ const t=taskById(id); if(!t) return; const iso=today();
   const on=(t.plannedFor===iso||t.confirmedFor===iso);
@@ -3137,6 +3180,10 @@ function bindDelegated(){
     let x;
     if((x=e.target.closest("[data-toggle]"))){ e.stopPropagation(); toggleTask(x.dataset.toggle); return; }
     if((x=e.target.closest("[data-plan]"))){ e.stopPropagation(); togglePlanToday(x.dataset.plan); return; }
+    if((x=e.target.closest("[data-carrykeep]"))){ e.stopPropagation(); carryKeep(x.dataset.carrykeep); return; }
+    if((x=e.target.closest("[data-carrytom]"))){ e.stopPropagation(); carryTomorrow(x.dataset.carrytom); return; }
+    if((x=e.target.closest("[data-carryrem]"))){ e.stopPropagation(); carryRemove(x.dataset.carryrem); return; }
+    if((x=e.target.closest("#carryKeepAll"))){ e.stopPropagation(); carryKeepAll(); return; }
     if((x=e.target.closest("[data-qacat]"))){ e.stopPropagation(); qaCat=x.dataset.qacat;
       $$(".qa-cat").forEach(el=>{ const on=el.dataset.qacat===qaCat; el.classList.toggle("on",on); const col=catColor(el.dataset.qacat);
         el.style.background=on?col:""; el.style.borderColor=on?col:""; el.style.color=on?"#fff":""; const dot=el.querySelector(".dot"); if(dot) dot.style.background=on?"#fff":col; }); return; }
