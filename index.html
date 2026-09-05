@@ -1701,14 +1701,16 @@ function renderFabMenu(){
   $("#fabMenu").innerHTML = FAB_ITEMS[MODE].map(([k,ic,l])=>`<button class="fab-item" data-add="${k}"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#${ic}"/></svg> ${l}</button>`).join("");
 }
 function syncTabbar(){
-  // Tabbar adattiva: Generale = Oggi·Settimana·+·Agenda·Altro ; Lavoro = Oggi·Agenda·+·Lavoro·Altro
-  const t2=$("#tabSecond"), t4=$("#tabFourth");
+  // Tabbar adattiva (mobile): Generale = Oggi·Settimana·+·Agenda·Sport ; Lavoro = Oggi·Agenda·+·Categorie·Da dire
+  const t2=$("#tabSecond"), t4=$("#tabFourth"), t5=$("#tabMore");
   if(MODE==="work"){
     t2.dataset.page="agenda"; t2.querySelector("span").textContent="Agenda"; t2.querySelector("use").setAttribute("href","#i-agenda");
     t4.dataset.page="work";   t4.querySelector("span").textContent="Categorie"; t4.querySelector("use").setAttribute("href","#i-cats");
+    if(t5){ t5.dataset.page="say"; t5.querySelector("span").textContent="Da dire"; t5.querySelector("use").setAttribute("href","#i-say"); }
   } else {
     t2.dataset.page="planner"; t2.querySelector("span").textContent="Settimana"; t2.querySelector("use").setAttribute("href","#i-week");
     t4.dataset.page="agenda";  t4.querySelector("span").textContent="Agenda";    t4.querySelector("use").setAttribute("href","#i-agenda");
+    if(t5){ t5.dataset.page="sport"; t5.querySelector("span").textContent="Sport"; t5.querySelector("use").setAttribute("href","#i-gym"); }
   }
 }
 function applyMode(m,{persist=true}={}){
